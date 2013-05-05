@@ -97,7 +97,7 @@ do_reversegltc = function(trade)
 
 update_tickers = function()
 {
-  var ltc_usd = {buy: 1, sell: 1}, btc_ltc={buy: 1, sell: 1}, btc_usd = {buy: 1, sell: 1};
+  var ltc_usd = {buy: 1, sell: 1}, ltc_btc={buy: 1, sell: 1}, btc_usd = {buy: 1, sell: 1};
   var cash = wallet.usd;
 
 	btcePublic.ticker("ltc_usd", function(err, data) {
