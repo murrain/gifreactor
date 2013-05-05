@@ -1,4 +1,4 @@
-greaseltc
-=========
+awesomefollowup
+===============
 
-GreaseLTC is a cryptocurrency trading engine.
+Automatic lead followup system.

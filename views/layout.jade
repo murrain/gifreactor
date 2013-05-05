@@ -1,0 +1,16 @@
+!!! 5
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width')
+        title GreaseLTC
+        block styles
+            link(rel='stylesheet', href='css/normalize.css')
+            link(rel='stylesheet', href='css/foundation.css')
+            script(src='js/vendor/custom.modernizr.js')
+    block body
+
+    block scripts
+        script
+            document.write('<script src=' +('__proto__' in {} ? 'js/vendor/zepto' : 'js/vendor/jquery') + '.js><\\/script>')
+        script(src='js/foundation.min.js')
