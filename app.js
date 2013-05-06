@@ -135,7 +135,7 @@ do_reversegltc = function(trade)
 {
   console.log("Perform ReverseGreaseLTC");
   console.log(trade);
-  async.series([
+  async.parallel([
     function(callback)
     {
       btceTrade.trade("btc_usd","buy",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
@@ -217,33 +217,54 @@ update_tickers = function()
     function(callback)
     {
       btcePublic.ticker("ltc_usd", function(err, data) {
-        data.ticker.currency = 'LTC_USD';
-        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
-        });
-        ltc_usd.sell = data.ticker.buy;
-        ltc_usd.buy = data.ticker.sell;
+        if(err)
+        {
+          console.log("Unable to retreive ticker for LTC_USD");
+        }
+        else
+        {
+          data.ticker.currency = 'LTC_USD';
+          var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+          });
+          ltc_usd.sell = data.ticker.buy;
+          ltc_usd.buy = data.ticker.sell; 
+        }
         callback(null,'ltc_usd_done');
       });
     },
     function(callback)
     {
       btcePublic.ticker("ltc_btc", function(err, data) {
-        data.ticker.currency = 'LTC_BTC';
-        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
-        });
-        ltc_btc.sell = data.ticker.buy;
-        ltc_btc.buy = data.ticker.sell;
+        if(err)
+        {
+          console.log("Unable to retreive ticker for LTC_BTC");
+        }
+        else
+        {
+          data.ticker.currency = 'LTC_BTC';
+          var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+          });
+          ltc_btc.sell = data.ticker.buy;
+          ltc_btc.buy = data.ticker.sell;  
+        }
         callback(null,'ltc_btc_done');
       });
     },
     function(callback)
     {
       btcePublic.ticker("btc_usd", function(err, data) {
-        data.ticker.currency = 'BTC_USD';
-        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
-        });
-        btc_usd.sell = data.ticker.buy;
-        btc_usd.buy = data.ticker.sell;
+        if(err)
+        {
+          console.log("Unable to retreive ticker for BTC_USD");
+        }
+        else
+        {
+          data.ticker.currency = 'BTC_USD';
+          var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+          });
+          btc_usd.sell = data.ticker.buy;
+          btc_usd.buy = data.ticker.sell;
+        }
         callback(null, 'btc_usd_done');
       })
     }
@@ -263,8 +284,8 @@ update_tickers = function()
     btceTrade.orderList({active: 1},function(err,data){
       if (err && err.message !='no orders')
       {
-	console.log("Error retreving order list");
-	console.log(err.message);
+        console.log("Error retreving order list");
+        console.log(err.message);
       }
       else
       {
@@ -278,8 +299,7 @@ update_tickers = function()
         {
           do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':floorFigure(cash / btc_usd.buy,8)}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': floorFigure(cash / btc_usd.buy,8)}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': floorFigure(floorFigure(cash / btc_usd.buy,8) / ltc_btc.buy,8)} });
         }
-      }
-      
+      } 
     });
 
     //console.log("Tickers: ");
