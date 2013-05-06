@@ -143,7 +143,7 @@ update_tickers = function()
         });
         btc_usd.sell = data.ticker.sell;
         btc_usd.buy = data.ticker.buy;
-      });
+      })
     ]),
     function()
     {
