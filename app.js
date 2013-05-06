@@ -139,6 +139,16 @@ do_reversegltc = function(trade)
     function(callback)
     {
       btceTrade.trade("btc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
+        if (err)
+        {
+          console.log("Error");
+          console.log(err);
+          callback(err,"rgltc_trade_1");
+        }
+        else
+        {
+
+        }
         console.log(data);
         callback(null,"rgltc_trade_1");
       });
@@ -146,15 +156,35 @@ do_reversegltc = function(trade)
     function(callback)
     {
       btceTrade.trade("ltc_btc","buy",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
-        console.log(data);
-        callback(null,"rgltc_trade_2");
+        if (err)
+        {
+          console.log("Error");
+          console.log(err);
+          callback(err,"rgltc_trade_2");
+        }
+        else
+        {
+          console.log(data);
+          callback(null,"rgltc_trade_2");
+        }
+        
       })
     },
     function(callback)
     {
       btceTrade.trade("ltc_usd","sell",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
-        console.log(data);
-        callback(null,"rgltc_trade_3");
+        if (err)
+        {
+          console.log("Error");
+          console.log(err);
+          callback(err,"rgltc_trade_3");
+        }
+        else
+        {
+          console.log(data);
+          callback(null,"rgltc_trade_3"); 
+        }
+        
       })
     }
   ]);
@@ -246,7 +276,7 @@ update_tickers = function()
         }
         else if ( reversegltc > cash && cash >= 1 && !data)
         {
-          do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':cash / btc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': cash / btc_usd.buy}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': cash / btc_usd.buy / ltc_btc.buy} });
+          do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':floorFigure(cash / btc_usd.buy,8)}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': floorFigure(cash / btc_usd.buy,8)}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': floorFigure(floorFigure(cash / btc_usd.buy,8) / ltc_btc.buy,8)} });
         }
       }
       
