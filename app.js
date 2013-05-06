@@ -231,9 +231,10 @@ update_tickers = function()
     reversegltc = cash / btc_usd.buy / ltc_btc.buy * ltc_usd.sell * 0.999385;
     
     btceTrade.orderList({active: 1},function(err,data){
-      if (err)
+      if (err && err.message !='no orders')
       {
-
+	console.log("Error retreving order list");
+	console.log(err.message);
       }
       else
       {
