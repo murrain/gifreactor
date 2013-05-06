@@ -227,8 +227,8 @@ update_tickers = function()
     tickers.btce.sell.btc_usd = btc_usd.sell;
     tickers.btce.buy.btc_usd = btc_usd.buy;
 
-    greaseltc = cash / ltc_usd.buy * ltc_btc.sell * btc_usd.sell * 0.99940012;
-    reversegltc = cash / btc_usd.buy / ltc_btc.buy * ltc_usd.sell * 0.99940012;
+    greaseltc = cash / ltc_usd.buy * ltc_btc.sell * btc_usd.sell * 0.999385;
+    reversegltc = cash / btc_usd.buy / ltc_btc.buy * ltc_usd.sell * 0.999385;
     
     btceTrade.orderList({active: 1},function(err,data){
       console.log("OrderList:");
