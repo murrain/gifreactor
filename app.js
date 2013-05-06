@@ -226,7 +226,7 @@ update_tickers = function()
     greaseltc = cash / ltc_usd.buy * ltc_btc.sell * btc_usd.sell * 0.99940012;
     reversegltc = cash / btc_usd.buy / ltc_btc.buy * ltc_usd.sell * 0.99940012;
     
-    btceTrade.orderList(null,function(err,data){
+    btceTrade.orderList({active: 1},function(err,data){
       console.log("OrderList:");
       console.log("data");
       if (greaseltc > cash && cash >= 1)
