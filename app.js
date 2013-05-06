@@ -170,6 +170,7 @@ update_wallets = function()
 		wallet.usd = data.funds.usd;
 		wallet.ltc = data.funds.ltc;
 		wallet.btc = data.funds.btc;
+    console.log(wallet);
 	});
 }
 
