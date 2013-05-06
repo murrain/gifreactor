@@ -121,7 +121,6 @@ update_tickers = function()
     async.parallel([
       btcePublic.ticker("ltc_usd", function(err, data) {
         data.ticker.currency = 'LTC_USD';
-        console.log(data);
         var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
         });
         ltc_usd.sell = data.ticker.sell;
@@ -129,7 +128,6 @@ update_tickers = function()
       }),
       btcePublic.ticker("ltc_btc", function(err, data) {
         data.ticker.currency = 'LTC_BTC';
-        console.log(data);
         var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
         });
         ltc_btc.sell = data.ticker.sell;
@@ -137,7 +135,6 @@ update_tickers = function()
       }),
       btcePublic.ticker("btc_usd", function(err, data) {
         data.ticker.currency = 'BTC_USD';
-        console.log(data);
         var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
         });
         btc_usd.sell = data.ticker.sell;
