@@ -55,7 +55,7 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var current_nonce = 5;
+var current_nonce = 1367814023;
 
 var BTCE = require('btc-e'),
     btceTrade = new BTCE('ADHRY1UX-RTLJLAOC-VHX6JQHE-99ZTTTZI-EIJ26FN0','35cb2f64c8569809ec0062a53ce9634d12f2dab5ca9f3e4804298cd5d1b84721',function(){
