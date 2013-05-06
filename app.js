@@ -117,60 +117,58 @@ update_tickers = function()
 {
   var ltc_usd = {buy: 1, sell: 1}, ltc_btc={buy: 1, sell: 1}, btc_usd = {buy: 1, sell: 1};
   var cash = wallet.usd;
-  async.series([
-    async.parallel([
-      btcePublic.ticker("ltc_usd", function(err, data) {
-        data.ticker.currency = 'LTC_USD';
-        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
-        });
-        ltc_usd.sell = data.ticker.sell;
-        ltc_usd.buy = data.ticker.buy;
-      }),
-      btcePublic.ticker("ltc_btc", function(err, data) {
-        data.ticker.currency = 'LTC_BTC';
-        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
-        });
-        ltc_btc.sell = data.ticker.sell;
-        ltc_btc.buy = data.ticker.buy;
-      }),
-      btcePublic.ticker("btc_usd", function(err, data) {
-        data.ticker.currency = 'BTC_USD';
-        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
-        });
-        btc_usd.sell = data.ticker.sell;
-        btc_usd.buy = data.ticker.buy;
-      })
-    ]),
-    function(cash, ltc_usd,ltc_btc,btc_usd)
+  async.parallel([
+    btcePublic.ticker("ltc_usd", function(err, data) {
+      data.ticker.currency = 'LTC_USD';
+      var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+      });
+      ltc_usd.sell = data.ticker.sell;
+      ltc_usd.buy = data.ticker.buy;
+    }),
+    btcePublic.ticker("ltc_btc", function(err, data) {
+      data.ticker.currency = 'LTC_BTC';
+      var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+      });
+      ltc_btc.sell = data.ticker.sell;
+      ltc_btc.buy = data.ticker.buy;
+    }),
+    btcePublic.ticker("btc_usd", function(err, data) {
+      data.ticker.currency = 'BTC_USD';
+      var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+      });
+      btc_usd.sell = data.ticker.sell;
+      btc_usd.buy = data.ticker.buy;
+    })
+  ],
+  function(err, results)
+  {
+    tickers.btce.sell.ltc_usd = ltc_usd.sell;
+    tickers.btce.buy.ltc_usd = ltc_usd.buy;
+    tickers.btce.sell.ltc_btc = ltc_btc.sell;
+    tickers.btce.buy.ltc_btc = ltc_btc.buy;
+    tickers.btce.sell.btc_usd = btc_usd.sell;
+    tickers.btce.buy.btc_usd = btc_usd.buy;
+
+    greaseltc = cash / ltc_usd.buy * ltc_btc.sell * btc_usd.sell * 0.99940012;
+    reversegltc = cash / btc_usd.buy / ltc_btc.buy * ltc_usd.sell * 0.99940012;
+
+    if (greaseltc > wallet.usd)
     {
-      tickers.btce.sell.ltc_usd = ltc_usd.sell;
-      tickers.btce.buy.ltc_usd = ltc_usd.buy;
-      tickers.btce.sell.ltc_btc = ltc_btc.sell;
-      tickers.btce.buy.ltc_btc = ltc_btc.buy;
-      tickers.btce.sell.btc_usd = btc_usd.sell;
-      tickers.btce.buy.btc_usd = btc_usd.buy;
-
-      greaseltc = cash / ltc_usd.buy * ltc_btc.sell * btc_usd.sell * 0.99940012;
-      reversegltc = cash / btc_usd.buy / ltc_btc.buy * ltc_usd.sell * 0.99940012;
-
-      if (greaseltc > wallet.usd)
-      {
-        do_greaseltc({'ltc_usd': {'rate':ltc_usd.buy,'amount':cash / ltc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.sell,'amount': cash / ltc_usd.buy}, 'btc_usd': {'rate':btc_usd.sell,'amount': cash / ltc_usd.buy * ltc_btc.sell} });
-      }
-      else if ( reversegltc > wallet.usd )
-      {
-        do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':cash / btc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': cash / btc_usd.buy}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': cash / btc_usd.buy / ltc_btc.buy} });
-      }
-
-      console.log("Tickers: ");
-      console.log(tickers.btce);
-
-      console.log("Wallet: ");
-      console.log(wallet);
-      console.log("GreaseLTC: "+greaseltc);
-      console.log("ReverseGLTC: "+reversegltc);
+      do_greaseltc({'ltc_usd': {'rate':ltc_usd.buy,'amount':cash / ltc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.sell,'amount': cash / ltc_usd.buy}, 'btc_usd': {'rate':btc_usd.sell,'amount': cash / ltc_usd.buy * ltc_btc.sell} });
     }
-  ]);
+    else if ( reversegltc > wallet.usd )
+    {
+      do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':cash / btc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': cash / btc_usd.buy}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': cash / btc_usd.buy / ltc_btc.buy} });
+    }
+
+    console.log("Tickers: ");
+    console.log(tickers.btce);
+
+    console.log("Wallet: ");
+    console.log(wallet);
+    console.log("GreaseLTC: "+greaseltc);
+    console.log("ReverseGLTC: "+reversegltc);
+  });
     
 }
 
