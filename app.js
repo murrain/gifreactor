@@ -103,6 +103,7 @@ do_reversegltc = function(trade)
 
 update_wallets = function()
 {
+  console.log("Updating wallets");
 	btceTrade.getInfo(function(err,data) {
 		if (err) {
 			throw err;
@@ -115,6 +116,7 @@ update_wallets = function()
 
 update_tickers = function()
 {
+  console.log("Updating tickers");
   var ltc_usd = {buy: 1, sell: 1}, ltc_btc={buy: 1, sell: 1}, btc_usd = {buy: 1, sell: 1};
   var cash = wallet.usd;
   async.parallel([
