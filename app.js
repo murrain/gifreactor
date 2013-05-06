@@ -107,7 +107,6 @@ update_wallets = function()
 		if (err) {
 			throw err;
 		}
-		console.log(data);
 		wallet.usd = data.funds.usd;
 		wallet.ltc = data.funds.ltc;
 		wallet.btc = data.funds.btc;
@@ -145,7 +144,7 @@ update_tickers = function()
         btc_usd.buy = data.ticker.buy;
       })
     ]),
-    function()
+    function(cash, ltc_usd,ltc_btc,btc_usd)
     {
       tickers.btce.sell.ltc_usd = ltc_usd.sell;
       tickers.btce.buy.ltc_usd = ltc_usd.buy;
@@ -169,7 +168,8 @@ update_tickers = function()
       console.log("Tickers: ");
       console.log(tickers.btce);
 
-      console.log("Cash: "+wallet.usd);
+      console.log("Wallet: ");
+      console.log(wallet);
       console.log("GreaseLTC: "+greaseltc);
       console.log("ReverseGLTC: "+reversegltc);
     }
