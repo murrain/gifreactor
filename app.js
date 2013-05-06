@@ -56,14 +56,12 @@ var connection = mysql.createConnection({
 connection.connect();
 
 var current_nonce = 5;
-nonce_generator = function()
-{
-  current_nonce++;
-  return current_nonce; 
-};
 
 var BTCE = require('btc-e'),
-    btceTrade = new BTCE('ADHRY1UX-RTLJLAOC-VHX6JQHE-99ZTTTZI-EIJ26FN0','35cb2f64c8569809ec0062a53ce9634d12f2dab5ca9f3e4804298cd5d1b84721',current_nonce()),
+    btceTrade = new BTCE('ADHRY1UX-RTLJLAOC-VHX6JQHE-99ZTTTZI-EIJ26FN0','35cb2f64c8569809ec0062a53ce9634d12f2dab5ca9f3e4804298cd5d1b84721',function(){
+      current_nonce++;
+      return current_nonce;
+    }),
     btcePublic = new BTCE();
 var wallet = {usd:0,ltc:0,btc:0};
 var tickers = {btce: {buy: {ltc_usd: 1, ltc_btc: 1, btc_usd: 1}, sell: {ltc_usd: 1, ltc_btc: 1, btc_usd: 1} } };
