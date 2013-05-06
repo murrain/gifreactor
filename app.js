@@ -83,37 +83,49 @@ do_greaseltc = function(trade)
     function(callback)
     {
       btceTrade.trade("ltc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
+        console.log(data);
         if (err)
         {
           console.log("Error");
           console.log(err);
+          callback(err,"gltc_trade_1");
         }
-        console.log(data);
-        callback(null,"gltc_trade_1");
+        else
+        {
+          callback(null,"gltc_trade_1");
+        }
       });
     },
     function(callback)
     {
       btceTrade.trade("ltc_btc","sell",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
+        console.log(data);
         if (err)
         {
           console.log("Error");
           console.log(err);
+          callback(err,"gltc_trade_2");
         }
-        console.log(data);
-        callback(null,"gltc_trade_2");
+        else
+        {
+          callback(null,"gltc_trade_2");
+        }
       })
     },
     function(callback)
     {
       btceTrade.trade("btc_usd","sell",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
+        console.log(data);
         if (err)
         {
           console.log("Error");
           console.log(err);
+          callback(err,"gltc_trade_3"); 
         }
-        console.log(data);
-        callback(null,"gltc_trade_3");
+        else
+        {
+          callback(null,"gltc_trade_3"); 
+        }
       })
     }
   ]);
