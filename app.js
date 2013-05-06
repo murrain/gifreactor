@@ -177,7 +177,7 @@ update_tickers = function()
     
 }
 
-greaseltc = function()
+make_money = function()
 {
   async.series([
     update_wallets(),
@@ -192,7 +192,7 @@ greaseltc = function()
   });
 }
 
-setInterval(greaseltc,10000);
+setInterval(make_money,10000);
 
 var io = require("socket.io").listen(server)
 
