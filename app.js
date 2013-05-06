@@ -70,6 +70,11 @@ do_greaseltc = function(trade)
     function(callback)
     {
       btceTrade.trade("ltc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
+        if (err)
+        {
+          console.log("Error");
+          console.log(err);
+        }
         console.log(data);
         callback(null,"gltc_trade_1");
       });
@@ -77,6 +82,11 @@ do_greaseltc = function(trade)
     function(callback)
     {
       btceTrade.trade("ltc_btc","sell",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
+        if (err)
+        {
+          console.log("Error");
+          console.log(err);
+        }
         console.log(data);
         callback(null,"gltc_trade_2");
       })
@@ -84,6 +94,11 @@ do_greaseltc = function(trade)
     function(callback)
     {
       btceTrade.trade("btc_usd","sell",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
+        if (err)
+        {
+          console.log("Error");
+          console.log(err);
+        }
         console.log(data);
         callback(null,"gltc_trade_3");
       })
@@ -228,14 +243,14 @@ make_money = function()
   });
 }
 
-setInterval(make_money,10000);
+setInterval(make_money,5000);
 
 var io = require("socket.io").listen(server)
 
 io.sockets.on('connection', function (socket) {
 	setInterval(function() {
 		socket.emit('ticker',{greaseltc: greaseltc, reversegltc: reversegltc,usd: wallet.usd,ltc: wallet.ltc, btc: wallet.btc,btce:tickers.btce});
-	},10500);
+	},10000);
 });
 
 app.get('/', function(req,res){
