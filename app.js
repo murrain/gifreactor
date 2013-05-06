@@ -194,13 +194,13 @@ update_tickers = function()
       do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':cash / btc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': cash / btc_usd.buy}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': cash / btc_usd.buy / ltc_btc.buy} });
     }
 
-    console.log("Tickers: ");
-    console.log(tickers.btce);
+    //console.log("Tickers: ");
+    //console.log(tickers.btce);
 
-    console.log("Wallet: ");
-    console.log(wallet);
-    console.log("GreaseLTC: "+greaseltc);
-    console.log("ReverseGLTC: "+reversegltc);
+    //console.log("Wallet: ");
+    //console.log(wallet);
+    //console.log("GreaseLTC: "+greaseltc);
+    //console.log("ReverseGLTC: "+reversegltc);
   });
     
 }
