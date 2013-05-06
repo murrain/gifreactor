@@ -138,7 +138,7 @@ do_reversegltc = function(trade)
   async.series([
     function(callback)
     {
-      btceTrade.trade("btc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
+      btceTrade.trade("btc_usd","buy",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
         if (err)
         {
           console.log("Error");
