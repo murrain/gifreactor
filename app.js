@@ -165,8 +165,8 @@ update_tickers = function()
         data.ticker.currency = 'LTC_USD';
         var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
         });
-        ltc_usd.sell = data.ticker.sell;
-        ltc_usd.buy = data.ticker.buy;
+        ltc_usd.sell = data.ticker.buy;
+        ltc_usd.buy = data.ticker.sell;
         callback(null,'ltc_usd_done');
       });
     },
@@ -176,8 +176,8 @@ update_tickers = function()
         data.ticker.currency = 'LTC_BTC';
         var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
         });
-        ltc_btc.sell = data.ticker.sell;
-        ltc_btc.buy = data.ticker.buy;
+        ltc_btc.sell = data.ticker.buy;
+        ltc_btc.buy = data.ticker.sell;
         callback(null,'ltc_btc_done');
       });
     },
@@ -187,8 +187,8 @@ update_tickers = function()
         data.ticker.currency = 'BTC_USD';
         var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
         });
-        btc_usd.sell = data.ticker.sell;
-        btc_usd.buy = data.ticker.buy;
+        btc_usd.sell = data.ticker.buy;
+        btc_usd.buy = data.ticker.sell;
         callback(null, 'btc_usd_done');
       })
     }
