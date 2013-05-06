@@ -231,16 +231,24 @@ update_tickers = function()
     reversegltc = cash / btc_usd.buy / ltc_btc.buy * ltc_usd.sell * 0.999385;
     
     btceTrade.orderList({active: 1},function(err,data){
-      console.log("OrderList:");
-      console.log(data);
-      if (greaseltc > cash && cash >= 1 && !data)
+      if (err)
       {
-        do_greaseltc({'ltc_usd': {'rate':ltc_usd.buy,'amount':floorFigure(cash / ltc_usd.buy,8)}, 'ltc_btc': {'rate':ltc_btc.sell,'amount': floorFigure(cash / ltc_usd.buy,8)}, 'btc_usd': {'rate':btc_usd.sell,'amount': floorFigure(floorFigure(cash / ltc_usd.buy,8) * ltc_btc.sell,8)} });
+
       }
-      else if ( reversegltc > cash && cash >= 1 && !data)
+      else
       {
-        do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':cash / btc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': cash / btc_usd.buy}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': cash / btc_usd.buy / ltc_btc.buy} });
+        console.log("OrderList:");
+        console.log(data);
+        if (greaseltc > cash && cash >= 1 && !data)
+        {
+          do_greaseltc({'ltc_usd': {'rate':ltc_usd.buy,'amount':floorFigure(cash / ltc_usd.buy,8)}, 'ltc_btc': {'rate':ltc_btc.sell,'amount': floorFigure(cash / ltc_usd.buy,8)}, 'btc_usd': {'rate':btc_usd.sell,'amount': floorFigure(floorFigure(cash / ltc_usd.buy,8) * ltc_btc.sell,8)} });
+        }
+        else if ( reversegltc > cash && cash >= 1 && !data)
+        {
+          do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':cash / btc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': cash / btc_usd.buy}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': cash / btc_usd.buy / ltc_btc.buy} });
+        }
       }
+      
     });
 
     //console.log("Tickers: ");
