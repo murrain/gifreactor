@@ -118,27 +118,39 @@ update_tickers = function()
   var ltc_usd = {buy: 1, sell: 1}, ltc_btc={buy: 1, sell: 1}, btc_usd = {buy: 1, sell: 1};
   var cash = wallet.usd;
   async.parallel([
-    btcePublic.ticker("ltc_usd", function(err, data) {
-      data.ticker.currency = 'LTC_USD';
-      var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+    function(callback)
+    {
+      btcePublic.ticker("ltc_usd", function(err, data) {
+        data.ticker.currency = 'LTC_USD';
+        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+        });
+        ltc_usd.sell = data.ticker.sell;
+        ltc_usd.buy = data.ticker.buy;
+        callback(null,'ltc_usd_done');
       });
-      ltc_usd.sell = data.ticker.sell;
-      ltc_usd.buy = data.ticker.buy;
-    }),
-    btcePublic.ticker("ltc_btc", function(err, data) {
-      data.ticker.currency = 'LTC_BTC';
-      var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+    },
+    function(callback)
+    {
+      btcePublic.ticker("ltc_btc", function(err, data) {
+        data.ticker.currency = 'LTC_BTC';
+        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+        });
+        ltc_btc.sell = data.ticker.sell;
+        ltc_btc.buy = data.ticker.buy;
+        callback(null,'ltc_btc_done');
       });
-      ltc_btc.sell = data.ticker.sell;
-      ltc_btc.buy = data.ticker.buy;
-    }),
-    btcePublic.ticker("btc_usd", function(err, data) {
-      data.ticker.currency = 'BTC_USD';
-      var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
-      });
-      btc_usd.sell = data.ticker.sell;
-      btc_usd.buy = data.ticker.buy;
-    })
+    },
+    function(callback)
+    {
+      btcePublic.ticker("btc_usd", function(err, data) {
+        data.ticker.currency = 'BTC_USD';
+        var query = connection.query('INSERT INTO ticker SET ?',data.ticker, function(err,result) {
+        });
+        btc_usd.sell = data.ticker.sell;
+        btc_usd.buy = data.ticker.buy;
+        callback(null, 'btc_usd_done');
+      })
+    }
   ],
   function(err, results)
   {
@@ -175,8 +187,16 @@ update_tickers = function()
 make_money = function()
 {
   async.series([
-    update_wallets(),
-    update_tickers()
+    function(callback)
+    {
+      update_wallets()
+      callback(null, 'wallets');
+    },
+    function(callback)
+    {
+      update_tickers()
+      callback(null,"tickers");
+    }
   ],
   function(err, results)
   {
