@@ -66,39 +66,58 @@ do_greaseltc = function(trade)
 {
   console.log("Perform GreaseLTC");
   console.log(trade);
-  /*
   async.series([
-    btceTrade.trade("ltc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
-      console.log(data);
-    }),
-    btceTrade.trade("ltc_btc","sell",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
-      console.log(data);
-    }),
-    btceTrade.trade("btc_usd","sell",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
-      console.log(data);
-    })
+    function(callback)
+    {
+      btceTrade.trade("ltc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
+        console.log(data);
+        callback(null,"gltc_trade_1");
+      });
+    },
+    function(callback)
+    {
+      btceTrade.trade("ltc_btc","sell",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
+        console.log(data);
+        callback(null,"gltc_trade_2");
+      })
+    },
+    function(callback)
+    {
+      btceTrade.trade("btc_usd","sell",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
+        console.log(data);
+        callback(null,"gltc_trade_3");
+      })
+    }
   ]);
-  
-  */
 };
 
 do_reversegltc = function(trade)
 {
   console.log("Perform ReverseGreaseLTC");
   console.log(trade);
-  /*
   async.series([
-    btceTrade.trade("btc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
-      console.log(data);
-    }),
-    btceTrade.trade("ltc_btc","buy",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
-      console.log(data);
-    }),
-    btceTrade.trade("ltc_usd","sell",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
-      console.log(data);
-    })
+    function(callback)
+    {
+      btceTrade.trade("btc_usd","buy",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
+        console.log(data);
+        callback(null,"rgltc_trade_1");
+      });
+    },
+    function(callback)
+    {
+      btceTrade.trade("ltc_btc","buy",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
+        console.log(data);
+        callback(null,"rgltc_trade_2");
+      })
+    },
+    function(callback)
+    {
+      btceTrade.trade("ltc_usd","sell",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
+        console.log(data);
+        callback(null,"rgltc_trade_3");
+      })
+    }
   ]);
-  */
 };
 
 update_wallets = function()
