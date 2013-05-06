@@ -69,6 +69,12 @@ var wallet = {usd:0,ltc:0,btc:0};
 var tickers = {btce: {buy: {ltc_usd: 1, ltc_btc: 1, btc_usd: 1}, sell: {ltc_usd: 1, ltc_btc: 1, btc_usd: 1} } };
 var greaseltc, reversegltc;
 
+function floorFigure(figure, decimals){
+     if (!decimals) decimals = 2;
+     var d = Math.pow(10,decimals);
+     return ((figure*d)/d).toFixed(decimals);
+};
+
 do_greaseltc = function(trade)
 {
   console.log("Perform GreaseLTC");
@@ -209,7 +215,7 @@ update_tickers = function()
 
     if (greaseltc > cash && cash >= 1)
     {
-      do_greaseltc({'ltc_usd': {'rate':ltc_usd.buy,'amount':cash / ltc_usd.buy}, 'ltc_btc': {'rate':ltc_btc.sell,'amount': cash / ltc_usd.buy}, 'btc_usd': {'rate':btc_usd.sell,'amount': cash / ltc_usd.buy * ltc_btc.sell} });
+      do_greaseltc({'ltc_usd': {'rate':ltc_usd.buy,'amount':floorFigure(cash / ltc_usd.buy,8)}, 'ltc_btc': {'rate':ltc_btc.sell,'amount': floorFigure(cash / ltc_usd.buy,8)}, 'btc_usd': {'rate':btc_usd.sell,'amount': floorFigure(floorFigure(cash / ltc_usd.buy,8) * ltc_btc.sell,8)} });
     }
     else if ( reversegltc > cash && cash >= 1 )
     {
