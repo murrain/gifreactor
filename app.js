@@ -55,11 +55,13 @@ var connection = mysql.createConnection({
 
 connection.connect();
 
-var current_nonce = 1367814023;
 
 var BTCE = require('btc-e'),
+    fs = require('fs'),
+    currentNonce = fs.existsSync("nonce.json") ? JSON.parse(fs.readFileSync("nonce.json")) : Math.round((new Date()).getTime() / 1000),
     btceTrade = new BTCE('ADHRY1UX-RTLJLAOC-VHX6JQHE-99ZTTTZI-EIJ26FN0','35cb2f64c8569809ec0062a53ce9634d12f2dab5ca9f3e4804298cd5d1b84721',function(){
       current_nonce++;
+      fs.writeFile("nonce.json", currentNonce);
       return current_nonce;
     }),
     btcePublic = new BTCE();
