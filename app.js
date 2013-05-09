@@ -110,7 +110,7 @@ do_greaseltc = function(trade)
         {
           callback(null,"gltc_trade_1");
         }
-      });
+      })
     },
     function(callback)
     {
@@ -168,7 +168,7 @@ do_reversegltc = function(trade)
           callback(null,"rgltc_trade_1");
         }
       })
-    }.   
+    }, 
     function(callback)
     {
       btceTrade.trade("ltc_btc","buy",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
