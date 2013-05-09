@@ -135,7 +135,7 @@ do_reversegltc = function(trade)
 {
   console.log("Perform ReverseGreaseLTC");
   console.log(trade);
-  async.parallel([
+  async.series([
     function(callback)
     {
       btceTrade.trade("ltc_usd","sell",trade.ltc_usd.rate,trade.ltc_usd.amount, function(err, data) {
