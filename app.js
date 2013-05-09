@@ -155,6 +155,20 @@ do_reversegltc = function(trade)
     },
     function(callback)
     {
+      btceTrade.trade("ltc_btc","buy",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
+        if (err)
+        {
+          console.log("Error");
+          console.log(err);
+          callback(err,"rgltc_trade_2");
+        }
+        else
+        {
+          console.log(data);
+          callback(null,"rgltc_trade_2");
+    },
+    function(callback)
+    {
       btceTrade.trade("btc_usd","buy",trade.btc_usd.rate,trade.btc_usd.amount, function(err, data) {
         if (err)
         {
@@ -168,22 +182,7 @@ do_reversegltc = function(trade)
           callback(null,"rgltc_trade_1");
         }
       });
-    },
-    function(callback)
-    {
-      btceTrade.trade("ltc_btc","buy",trade.ltc_btc.rate,trade.ltc_btc.amount, function(err, data) {
-        if (err)
-        {
-          console.log("Error");
-          console.log(err);
-          callback(err,"rgltc_trade_2");
-        }
-        else
-        {
-          console.log(data);
-          callback(null,"rgltc_trade_2");
-        }
-        
+    }   
       })
     },
   ]);
