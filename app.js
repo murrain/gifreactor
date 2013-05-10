@@ -285,7 +285,7 @@ update_tickers = function()
         console.log("Error retreving order list");
         console.log(err.message);
       }
-      else
+      else if (!data || Object.keys(data).length < 27)
       {
         console.log("OrderList:");
         console.log(data);
