@@ -210,7 +210,7 @@ update_tickers = function()
 {
   console.log("Updating tickers");
   var ltc_usd = {buy: 1, sell: 1}, ltc_btc={buy: 1, sell: 1}, btc_usd = {buy: 1, sell: 1};
-  var cash = wallet.usd;
+  var cash = wallet.usd * 0.10;
   async.parallel([
     function(callback)
     {
@@ -334,7 +334,7 @@ make_money = function()
   });
 }
 
-setInterval(make_money,5000);
+setInterval(make_money,7500);
 
 var io = require("socket.io").listen(server)
 
