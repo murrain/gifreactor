@@ -289,11 +289,11 @@ update_tickers = function()
       {
         console.log("OrderList:");
         console.log(data);
-        if (greaseltc > cash && cash >= 1 && !data && greaseltc > reversegltc)
+        if (greaseltc > cash && cash >= 1 && greaseltc > reversegltc)
         {
           do_greaseltc({'ltc_usd': {'rate':ltc_usd.buy,'amount':floorFigure(cash / ltc_usd.buy,8)}, 'ltc_btc': {'rate':ltc_btc.sell,'amount': floorFigure(cash / ltc_usd.buy / .9998,8)}, 'btc_usd': {'rate':btc_usd.sell,'amount': floorFigure(floorFigure(cash / ltc_usd.buy,8) * ltc_btc.sell / .9998,8)} });
         }
-        else if (reversegltc > cash && cash >= 1 && !data)
+        else if (reversegltc > cash && cash >= 1 )
         {
           do_reversegltc({'btc_usd': {'rate':btc_usd.buy,'amount':floorFigure(cash / btc_usd.buy,8)}, 'ltc_btc': {'rate':ltc_btc.buy,'amount': floorFigure(cash / btc_usd.buy / .9998,8)}, 'ltc_usd': {'rate':ltc_usd.sell,'amount': floorFigure(floorFigure(cash / btc_usd.buy,8) / ltc_btc.buy / .9998,8)} });
         }
