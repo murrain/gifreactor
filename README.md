@@ -1,4 +1,4 @@
-awesomefollowup
+SwordParty
 ===============
 
-Automatic lead followup system.
+Random gif serving

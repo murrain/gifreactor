@@ -1,5 +1,5 @@
 {
-  "name": "greaseltc",
+  "name": "swordparty",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,13 +8,7 @@
   "dependencies": {
     "express": "3.1.0",
     "jade": "*",
-    "everyauth": "*",
-    "mysql": "2.0.0-alpha7",
-    "nodemailer": "*",
-    "socket.io": "*",
-    "twilio": "*",
     "connect-flash": "*",
-    "uglify-js": "*",
-    "btc-e": "*"
+    "uglify-js": "*"
   }
 }

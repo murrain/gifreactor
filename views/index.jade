@@ -1,51 +1,58 @@
-extends layout
-
-block append styles
-
-block body
-        body
-                .row
-                        .large-12.columns
-                                h2 GreaseLTC
-                                hr
-                .row
-                        .large-4.columns
-                                | USD 
-                                span#usd
-                        .large-4.columns
-                                | LTC 
-                                span#ltc
-                        .large-4.columns
-                                | BTC 
-                                span#btc
-                <hr>
-                .row
-                        .large-6.columns
-                                .row
-                                        .large-12.columns
-                                                h4
-                                                        | Grease
-                                .row
-                                        .large-12.columns
-                                                h4#greaseltc= greaseltc
-                        .large-6.columns
-                                .row
-                                         .large-12.columns
-                                                h4
-                                                        | Reverse
-                                .row
-                                        .large-12.columns
-                                                h4#reversegltc= reversegltc
-                block append scripts
-                        script(type='text/javascript', src='/socket.io/socket.io.js')
-                        script
-                                var socket= io.connect()
-                                socket.on('ticker',function(data) {
-                                        console.log(data);
-                                        $("#greaseltc").html(data.greaseltc);
-                                        $("#reversegltc").html(data.reversegltc);
-                                        $("#usd").html(data.usd);
-                                        $("#ltc").html(data.ltc);
-                                        $("#btc").html(data.btc);
-                                });
-
+!!! 5
+html(lang='en', style='background-color: #000000;')
+head
+    title GifReactor
+    meta(charset='utf-8')
+    meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', name='description')
+    link(href='http://gifreactor.com/stylesheets/vendor/nouislider.space.css', rel='stylesheet', type='text/css')
+    link(href='http://gifreactor.com/stylesheets/vendor/html5-doctor-reset-stylesheet.min.css', rel='stylesheet', type='text/css')
+    link(href='http://gifreactor.com/stylesheets/screen.css', rel='stylesheet', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Questrial', rel='stylesheet', type='text/css')
+    link(href='http://gifreactor.com/images/icon-128x128.png', rel='icon', type='image/png')
+    link(href='http://images.gifreactor.com/', rel='dns-prefetch')
+    link(href='http://videos.gifreactor.com/', rel='dns-prefetch')
+    link(href='http://gifreactor.com/images/logo.png', rel='prefetch')
+    link(href='http://gifreactor.com/images/play.png', rel='prefetch')
+    link(href='http://gifreactor.com/images/pause.png', rel='prefetch')
+    link(href='http://gifreactor.com/images/click.png', rel='prefetch')
+    link(href='http://gifreactor.com/images/swipe.png', rel='prefetch')
+    link(href='http://gifreactor.com/humans.txt', rel='author')
+    meta(content='yes', name='apple-mobile-web-app-capable')
+    meta(content='black-translucent', name='apple-mobile-web-app-status-bar-style')
+    meta(content='width=device-width, initial-scale=1.0, user-scalable=no', name='viewport')
+    link(href='http://gifreactor.com/images/icon-57x57.png', rel='apple-touch-icon')
+    link(href='http://gifreactor.com/images/icon-57x57.png', rel='apple-touch-icon', sizes='57x57')
+    link(href='http://gifreactor.com/images/icon-114x114.png', rel='apple-touch-icon', sizes='114x114')
+    link(href='http://gifreactor.com/images/icon-72x72.png', rel='apple-touch-icon', sizes='72x72')
+    link(href='http://gifreactor.com/images/icon-144x144.png', rel='apple-touch-icon', sizes='144x144')
+    link(href='http://gifreactor.com/images/icon-57x57.png', rel='apple-touch-icon-precomposed')
+    link(href='http://gifreactor.com/images/icon-57x57.png', rel='apple-touch-icon-precomposed', sizes='57x57')
+    link(href='http://gifreactor.com/images/icon-114x114.png', rel='apple-touch-icon-precomposed', sizes='114x114')
+    link(href='http://gifreactor.com/images/icon-72x72.png', rel='apple-touch-icon-precomposed', sizes='72x72')
+    link(href='http://gifreactor.com/images/icon-144x144.png', rel='apple-touch-icon-precomposed', sizes='144x144')
+    link(href='http://gifreactor.com/images/icon-128x128.png', rel='apple-touch-startup-image')
+  body
+    section
+      #instructions(style='background-image: url(/images/click.png);')
+      a#image
+    footer
+      a#logo(href='http://gifreactor.com/', title='SwordParty')
+        img(alt='SwordParty', src='http://gifreactor.com/images/logo.png')
+      ul#buttons
+        li
+          img#play-pause(alt='Play (up arrow)', src='http://gifreactor.com/images/play.png', title='Play (up arrow)')
+      #progress.noUiSlider
+    //if lt IE 9
+      script(src='http://code.jquery.com/jquery-1.10.2.min.js')
+      script
+        window.jQuery || document.write('<script src="/js/vendor/jquery.js"><\\/script>')
+    //if gte IE 9
+    script(src='http://code.jquery.com/jquery-2.0.3.min.js')
+    script
+      window.jQuery || document.write('<script src="/js/vendor/jquery.js"><\\/script>')
+    //
+      [endif]
+    script(src='http://gifreactor.com/js/vendor/hammer.min.js')
+    script(src='http://gifreactor.com/js/vendor/jquery.hammer.min.js')
+    script(src='http://gifreactor.com/js/vendor/jquery.nouislider.min.js')
+    script(src='http://gifreactor.com/js/drug.js')

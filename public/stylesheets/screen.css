@@ -1,0 +1,216 @@
+/*---------------------------------------------------------------------------*
+ * |   screen.sass                                                             |
+ * |                                                                           |
+ * |   Copyright (c) 2012-2013, The Worst Drug, Inc.                           |
+ * |   All rights reserved.                                                    |
+ *--------------------------------------------------------------------------- */
+html, body {
+  -webkit-text-size-adjust: none; }
+
+body {
+  background: black;
+  color: #dee4e6; }
+
+a {
+  color: #8f8e8e;
+  text-decoration: none; }
+  a:hover {
+    color: #dee4e6; }
+
+#instructions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: transparent no-repeat center center fixed;
+  background-size: 278px 322px;
+  z-index: 1;
+  display: none; }
+
+#image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: black no-repeat center center fixed;
+  background-size: contain;
+  cursor: pointer; }
+
+#video {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: black no-repeat center center fixed;
+  margin: auto;
+  display: none;
+  width: 100%;
+  height: 100%; }
+  @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) {
+    #video {
+      width: 90%;
+      height: 90%; } }
+  @media only screen and (max-device-width: 599px) {
+    #video {
+      width: 90%;
+      height: 90%; } }
+  #video source {
+    width: 100%;
+    height: 100%; }
+    @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) {
+      #video source {
+        width: 90%;
+        height: 90%; } }
+    @media only screen and (max-device-width: 599px) {
+      #video source {
+        width: 90%;
+        height: 90%; } }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 73px;
+  background: black;
+  border-top: 3px solid #dee4e6; }
+  @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) and (orientation: portrait) {
+    footer {
+      height: 73px; } }
+  @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) and (orientation: landscape) {
+    footer {
+      display: none; } }
+  @media only screen and (max-device-width: 599px) and (orientation: portrait) {
+    footer {
+      height: 36px; } }
+  @media only screen and (max-device-width: 599px) and (orientation: landscape) {
+    footer {
+      display: none; } }
+
+#logo img {
+  position: absolute;
+  width: 333px;
+  margin: 10px 0 4px 25px; }
+  @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) {
+    #logo img {
+      width: 333px;
+      margin: 10px 0 4px 25px; } }
+  @media only screen and (max-device-width: 599px) {
+    #logo img {
+      width: 150px;
+      margin: 7px 0 0 25px; } }
+
+#progress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #908f8f;
+  cursor: pointer;
+  display: none;
+  opacity: 0.5; }
+  #progress a {
+    background: black;
+    cursor: pointer; }
+
+#buttons {
+  position: absolute;
+  right: 20px;
+  height: 100%; }
+  #buttons li {
+    display: inline-block;
+    list-style-type: none;
+    height: 100%; }
+    #buttons li img {
+      position: relative;
+      z-index: 1;
+      height: 34px;
+      margin: 20px 15px;
+      cursor: pointer; }
+      @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) {
+        #buttons li img {
+          height: 34px;
+          margin: 20px 15px; } }
+      @media only screen and (max-device-width: 599px) {
+        #buttons li img {
+          height: 17px;
+          margin: 10px 7px; } }
+    #buttons li #play-pause, #buttons li #download {
+      display: none; }
+
+.noUiSlider.horizontal {
+  border-width: 0; }
+  .noUiSlider.horizontal div {
+    cursor: hand;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab; }
+    .noUiSlider.horizontal div:active {
+      cursor: grabbing;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing; }
+
+fieldset, ol {
+  border: none;
+  margin: 30px 0 30px 25px; }
+  fieldset input, ol input {
+    background: black;
+    color: #dee4e6;
+    font: 120px "Questrial", sans-serif;
+    text-transform: lowercase;
+    border: 0;
+    outline: 0;
+    width: 100%; }
+    @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) {
+      fieldset input, ol input {
+        font: 80px "Questrial", sans-serif;
+        padding: 0; } }
+    @media only screen and (max-device-width: 599px) {
+      fieldset input, ol input {
+        font: 40px "Questrial", sans-serif;
+        padding: 0; } }
+    fieldset input::-webkit-input-placeholder, ol input::-webkit-input-placeholder {
+      color: #8f8e8e; }
+    fieldset input::-moz-placeholder, ol input::-moz-placeholder {
+      color: #8f8e8e; }
+    fieldset input:-moz-placeholder, ol input:-moz-placeholder {
+      color: #8f8e8e; }
+    fieldset input:-ms-input-placeholder, ol input:-ms-input-placeholder {
+      color: #8f8e8e; }
+  fieldset li, ol li {
+    display: inline-block;
+    margin-right: 25px;
+    margin-bottom: 25px; }
+    fieldset li .search-result-frame-outer, ol li .search-result-frame-outer {
+      display: inline; }
+      fieldset li .search-result-frame-outer .search-result-frame-inner, ol li .search-result-frame-outer .search-result-frame-inner {
+        display: inline-block;
+        vertical-align: middle;
+        width: 100%;
+        height: auto; }
+        fieldset li .search-result-frame-outer .search-result-frame-inner img, ol li .search-result-frame-outer .search-result-frame-inner img {
+          width: 320px;
+          height: 180px;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 5px;
+          border: 1px solid #8f8e8e;
+          opacity: 0.85; }
+          @media only screen and (min-device-width: 600px) and (max-device-width: 1279px) {
+            fieldset li .search-result-frame-outer .search-result-frame-inner img, ol li .search-result-frame-outer .search-result-frame-inner img {
+              width: 320px;
+              height: 180px;
+              opacity: 1; } }
+          @media only screen and (max-device-width: 599px) {
+            fieldset li .search-result-frame-outer .search-result-frame-inner img, ol li .search-result-frame-outer .search-result-frame-inner img {
+              width: 160px;
+              height: 90px;
+              opacity: 1; } }
+          fieldset li .search-result-frame-outer .search-result-frame-inner img:hover, fieldset li .search-result-frame-outer .search-result-frame-inner img:active, ol li .search-result-frame-outer .search-result-frame-inner img:hover, ol li .search-result-frame-outer .search-result-frame-inner img:active {
+            border: 1px solid #dee4e6;
+            opacity: 1; }
+
+@media only screen and (max-device-width: 599px) {
+  ol {
+    margin-bottom: 66px; } }
