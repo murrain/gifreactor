@@ -1,4 +1,4 @@
-SwordParty
+GifReactor
 ===============
 
 Random gif serving
