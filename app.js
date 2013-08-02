@@ -36,8 +36,10 @@ process.on('uncaughtException', function (error) {
    console.log(error.stack);
 });
 
+var title = 'GifReactor';
+
 app.get('/mu-51b3d246-acc75319-c960211f-673bde03', function(req,res){
-  res.render('blitz', { title: 'AwesomeFollowUP' });
+  res.render('blitz', { title: title });
 });
 
 var mysql      = require('mysql');
@@ -49,7 +51,9 @@ var connection = mysql.createConnection({
   database : 'gifreactor'
 });
 
-app.get('/', routes.index);
+app.get('/', function(req,res){
+  res.render('index', { title: title });
+});
 
 app.get('/images/random.json', function(req,res){
   if (req.query.id)
@@ -87,17 +91,3 @@ server.listen(app.get('port'), function(){
 
 
 connection.connect();
-
-//var io = require("socket.io").listen(server)
-/*
-
-io.sockets.on('connection', function (socket) {
-	setInterval(function() {
-		socket.emit('ticker',{greaseltc: greaseltc, reversegltc: reversegltc,usd: wallet.usd,ltc: wallet.ltc, btc: wallet.btc,btce:tickers.btce});
-	},10000);
-});
-*/
-
-app.get('/', function(req,res){
-  res.render('index', { title: 'GifReactor' });
-});
