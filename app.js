@@ -32,6 +32,10 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+process.on('uncaughtException', function (error) {
+   console.log(error.stack);
+});
+
 app.get('/mu-51b3d246-acc75319-c960211f-673bde03', function(req,res){
   res.render('blitz', { title: 'AwesomeFollowUP' });
 });
