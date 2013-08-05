@@ -43,7 +43,7 @@ app.get('/mu-51b3d246-acc75319-c960211f-673bde03', function(req,res){
 });
 
 var mysql      = require('mysql');
-var connection = mysql.createConnection({
+var pool = mysql.createPool({
   host     : '127.0.0.1',
   port     : '3307',
   user     : 'root',
@@ -58,31 +58,37 @@ app.get('/', function(req,res){
 app.get('/images/random.json', function(req,res){
   if (req.query.id)
   {
-    connection.query('SELECT * FROM gifs WHERE id = ?',req.query.id, function(err,rows,fields){
-      if(err || rows.length < 1) 
-      {
-        console.log('No gif with id ' + req.query.id+ ' '+ err);
-        connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
-          if (err) console.log(err);
-          images = JSON.stringify(rows);                                                                                       
-          res.render('random', { images:images});                                                                              
-        });
-      }
-      else
-      {
-        images = JSON.stringify(rows);
-        res.render('random', { images:images});
-      }
-    });
-  }
-  else
-  {
-    connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
-      if (err) console.log(err);
-      images = JSON.stringify(rows);
-      res.render('random', { images:images});
-    });
-  }
+    pool.getConnection(function(err,connection) {
+      connection.query('SELECT * FROM gifs WHERE id = ?',req.query.id, function(err,rows,fields){
+        if(err || rows.length < 1)
+        {
+          console.log('No gif with id ' + req.query.id+ ' '+ err);
+          connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){        
+            if (err) console.log(err);                                                                    
+            images = JSON.stringify(rows);                                                                
+            res.render('random', { images:images});                                                       
+          });                                                                                             
+        }                                                                                                 
+        else                                                                                              
+        {                                                                                                 
+          images = JSON.stringify(rows);                                                                  
+          res.render('random', { images:images});                                                         
+        }                                                                                                 
+        connection.end();                                                                                 
+      });                                                                                                 
+    });                                                                                                   
+  }                                                                                                       
+  else                                                                                                    
+  {                                                                                                       
+    pool.getConnection(function(err,connection){                                                          
+      connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){            
+        if (err) console.log(err);                                                                        
+        images = JSON.stringify(rows);                                                                    
+        res.render('random', { images:images});                                                           
+        connection.end();                                                                                 
+      });                                                                                                 
+    });                                                                                                   
+  }                                                                                                       
 });
 
 server.listen(app.get('port'), function(){
@@ -90,4 +96,3 @@ server.listen(app.get('port'), function(){
 });
 
 
-connection.connect();
