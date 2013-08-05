@@ -40,6 +40,16 @@ head
       a#logo(href='http://gifreactor.com/', title='GifReactor')
         img(alt='GifReactor', src='http://gifreactor.com/images/logo.png')
       ul#buttons
+        ul.addthis_toolbox
+          li
+            a.addthis_button_facebook.at300b(title='Facebook',href='#')
+              img(src='http://gifreactor.com/images/Facebook.png')
+          li
+            a.addthis_button_twitter.at300b(title='tweet',href='#')
+              img(src='http://gifreactor.com/images/Twitter.png')
+          li
+            a.addthis_button_reddit.at300b(title='reddit',href='#')
+              img(src='http://gifreactor.com/images/Reddit.png')
         li
           img#play-pause(alt='Play (up arrow)', src='http://gifreactor.com/images/play.png', title='Play (up arrow)')
       #progress.noUiSlider
@@ -57,3 +67,7 @@ head
     script(src='http://gifreactor.com/js/vendor/jquery.hammer.min.js')
     script(src='http://gifreactor.com/js/vendor/jquery.nouislider.min.js')
     script(src='http://gifreactor.com/js/drug.js')
+    script(type='text/javascript')
+      var addthis_config = {"data_track_addressbar":true};
+    script(type='text/javascript', src='//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-520037966486c21f')
+
