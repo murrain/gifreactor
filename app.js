@@ -3,6 +3,13 @@
  * Module dependencies.
  */
 
+var toobusy = require('toobusy');
+ 
+app.use(function(req, res, next) {
+  if (toobusy()) res.send(503, "I'm busy right now, sorry.");
+  else next();
+});
+
 var flash = require('connect-flash')
   , express = require('express')
   , routes = require('./routes')
