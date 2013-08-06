@@ -4,12 +4,6 @@
  */
 
 var toobusy = require('toobusy');
- 
-app.use(function(req, res, next) {
-  if (toobusy()) res.send(503, "I'm busy right now, sorry.");
-  else next();
-});
-
 var flash = require('connect-flash')
   , express = require('express')
   , routes = require('./routes')
@@ -19,6 +13,11 @@ var flash = require('connect-flash')
 
 var app = express();
 var server = http.createServer(app)
+
+app.use(function(req, res, next) {
+  if (toobusy()) res.send(503, "I'm busy right now, sorry.");
+  else next();
+});
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3001);
