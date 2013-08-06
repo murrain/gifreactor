@@ -61,6 +61,17 @@ app.get('/', function(req,res){
   res.render('index', { title: title });
 });
 
+app.get('/:category', function(req,res){
+  console.log("category: "+ req.params.category);
+  pool.getConnection(function(err,connection) {
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5',req.params.category, function(err,rows,fields) {
+      if (err) console.log(err)
+      images = JSON.stringify(rows);
+      res.render('index', { images:images});
+    });
+  });  
+});
+
 app.get('/images/random.json', function(req,res){
   if (req.query.id)
   {
@@ -96,6 +107,43 @@ app.get('/images/random.json', function(req,res){
     });                                                                                                   
   }                                                                                                       
 });
+
+app.get('/images/:category/random.json', function(req,res){
+  if (req.query.id)
+  {
+    pool.getConnection(function(err,connection) {
+      connection.query('SELECT * FROM gifs WHERE id = ?',req.query.id, function(err,rows,fields){
+        if(err || rows.length < 1)
+        {
+          console.log('No gif with id ' + req.query.id+ ' '+ err);
+          connection.query('SELECT * FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category, function(err,rows,fields){
+            if (err) console.log(err);                                                                         
+            images = JSON.stringify(rows);                                                                     
+            res.render('random', { images:images});                                                            
+          });                                                                                                  
+        }                                                                                                      
+        else                                                                                                   
+        {                                                                                                      
+          images = JSON.stringify(rows);                                                                       
+          res.render('random', { images:images});                                                              
+        }                                                                                                      
+        connection.end();                                                                                      
+      });                                                                                                      
+    });                                                                                                        
+  }                                                                                                            
+  else                                                                                                         
+  {                                                                                                            
+    pool.getConnection(function(err,connection){                                                               
+      connection.query('SELECT * FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category,function(err,rows,fields){                 
+        if (err) console.log(err);                                                                             
+        images = JSON.stringify(rows);
+        res.render('random', { images:images});                                                                
+        connection.end();                                                                                      
+      });                                                                                                      
+    });                                                                                                        
+  }                                                                                                            
+}); 
+
 
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
