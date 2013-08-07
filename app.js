@@ -68,6 +68,7 @@ app.get('/:category', function(req,res){
       if (err) console.log(err)
       images = JSON.stringify(rows);
       res.render('index', { images:images});
+      connection.end(); 
     });
   });  
 });
