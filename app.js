@@ -118,7 +118,7 @@ app.get('/images/:category/random.json', function(req,res){
         if(err || rows.length < 1)
         {
           console.log('No gif with id ' + req.query.id+ ' '+ err);
-          connection.query('SELECT * FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category, function(err,rows,fields){
+          connection.query('SELECT gifs.* FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category, function(err,rows,fields){
             if (err) console.log(err);                                                                         
             images = JSON.stringify(rows);                                                                     
             res.render('random', { images:images});                                                            
@@ -137,7 +137,7 @@ app.get('/images/:category/random.json', function(req,res){
   {                                                                                                            
     pool.getConnection(function(err,connection){                                                               
       if(err) console.log(err);
-      connection.query('SELECT * FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category,function(err,rows,fields){                 
+      connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category,function(err,rows,fields){                 
         if (err) console.log(err);                                                                             
         images = JSON.stringify(rows);
         res.render('random', { images:images});                                                                
