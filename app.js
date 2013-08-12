@@ -67,7 +67,14 @@ app.get('/:category', function(req,res){
     connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5',req.params.category, function(err,rows,fields) {
       if (err) console.log(err)
       images = JSON.stringify(rows);
-      res.render('index', { images:images});
+      if( rows.length < 1)
+      {
+        res.redirect("/");
+      }
+      else
+      {
+        res.render('index', { title: title, images:images});
+      }
       connection.end(); 
     });
   });  
@@ -84,13 +91,13 @@ app.get('/images/random.json', function(req,res){
           connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){        
             if (err) console.log(err);                                                                    
             images = JSON.stringify(rows);                                                                
-            res.render('random', { images:images});                                                       
+            res.render('random', { images:images, title: title});                                                       
           });                                                                                             
         }                                                                                                 
         else                                                                                              
         {                                                                                                 
           images = JSON.stringify(rows);                                                                  
-          res.render('random', { images:images});                                                         
+          res.render('random', { images:images, title: title});                                                         
         }                                                                                                 
         connection.end();                                                                                 
       });                                                                                                 
