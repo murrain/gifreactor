@@ -449,7 +449,7 @@
         $('#video').on('ended', this._ended);
       }
       $('#image').fadeOut(100, function() {
-        $('#image').attr('src', image.url );
+        $('#image').css('background-image', "url(" + image.url + ")");
         $('#image').fadeIn(100);
         return $('#play-pause')[$('#video').length ? 'fadeIn' : 'fadeOut'](100);
       });
