@@ -62,6 +62,7 @@ app.get('/', function(req,res){
     connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
       if (err) console.log(err);
       images_string = JSON.stringify(rows);
+      console.log(images_string);
       res.render('index', { images:rows, images_string: images_string, title: title});
       connection.end();
     });
@@ -81,6 +82,7 @@ app.get('/:id(\\d+)', function(req,res){
       { 
         console.log(rows);                                                                                                
         images_string = JSON.stringify(rows);
+        console.log(images_string);
         res.render('index', { images:rows, images_string: images_string, title: title});
       }                                                                                                 
       connection.end();                                                                                 
@@ -100,6 +102,7 @@ app.get('/:category', function(req,res){
       else
       {
         images_string = JSON.stringify(rows);
+        console.log(images_string);
         res.render('index', { images:rows, images_string: images_string, title: title});
       }
       connection.end(); 
@@ -119,6 +122,7 @@ app.get('/:category/:id(\\d+)', function(req,res){
       else
       {
         images_string = JSON.stringify(rows);
+        console.log(images_string);
         res.render('index', { images:rows, images_string: images_string, title: title});
       }
       connection.end();
