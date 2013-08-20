@@ -64,7 +64,7 @@ head
     section
       #instructions(style='background-image: url(/images/click.png);')
       if images.length >= 1
-        a#image(style='background-image: url('{images[0].url}')')
+        a#image(style='background-image: url('+images[0].url+');')
         script
           window._queue = !{images_string}
       else  
