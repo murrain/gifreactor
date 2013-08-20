@@ -58,20 +58,19 @@ var pool = mysql.createPool({
 });
 
 app.get('/', function(req,res){
+  console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
     connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
       if (err) console.log(err);
       images_string = JSON.stringify(rows);
-      console.log(images_string);
       res.render('index', { images:rows, images_string: images_string, title: title});
       connection.end();
     });
   });
-});
 
 app.get('/:id(\\d+)', function(req,res){
-  console.log("id: " + req.params.id);
+  console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
     connection.query('SELECT * FROM gifs WHERE id = ?',req.params.id, function(err,rows,fields){
@@ -82,9 +81,7 @@ app.get('/:id(\\d+)', function(req,res){
       }                                                                                                 
       else                                                                                              
       { 
-        console.log(rows);                                                                                                
         images_string = JSON.stringify(rows);
-        console.log(images_string);
         res.render('index', { images:rows, images_string: images_string, title: title});
       }                                                                                                 
       connection.end();                                                                                 
@@ -93,7 +90,7 @@ app.get('/:id(\\d+)', function(req,res){
 });
 
 app.get('/:category', function(req,res){
-  console.log("category: "+ req.params.category);
+  console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
     connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5',req.params.category, function(err,rows,fields) {
@@ -105,7 +102,6 @@ app.get('/:category', function(req,res){
       else
       {
         images_string = JSON.stringify(rows);
-        console.log(images_string);
         res.render('index', { images:rows, images_string: images_string, title: title});
       }
       connection.end(); 
@@ -114,7 +110,7 @@ app.get('/:category', function(req,res){
 });
 
 app.get('/:category/:id(\\d+)', function(req,res){
-  console.log("category: "+ req.params.category);
+  console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
     connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND gifs.id = ? AND tags.tag = ? ORDER BY RAND() LIMIT 5',[req.params.id,req.params.category], function(err,rows,fields) {
@@ -126,7 +122,6 @@ app.get('/:category/:id(\\d+)', function(req,res){
       else
       {
         images_string = JSON.stringify(rows);
-        console.log(images_string);
         res.render('index', { images:rows, images_string: images_string, title: title});
       }
       connection.end();
@@ -157,9 +152,9 @@ app.get('/images/random.json', function(req,res){
         connection.end();                                                                                 
       });                                                                                                 
     });                                                                                                   
-  }                                                                                                       
-  else                                                                                                    
-  {                                                                                                       
+  } 
+  else 
+  {                                                                                                     
     pool.getConnection(function(err,connection){                                                          
       if(err) console.log(err);
       connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){            
