@@ -68,6 +68,7 @@ app.get('/', function(req,res){
       connection.end();
     });
   });
+});
 
 app.get('/:id(\\d+)', function(req,res){
   console.log(req.route);
