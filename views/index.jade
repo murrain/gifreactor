@@ -62,7 +62,10 @@ head
             img(alt='Share on Reddit', src='/images/Reddit.png', title='Share on Reddit')
     section
       #instructions(style='background-image: url(/images/click.png);')
-      a#image
+      if images
+        a#image(style='background-image: url('+images[0].url+');')
+      else  
+        a#image
     footer
       a#logo(href='http://gifreactor.com/', title='GifReactor')
         img(alt='GifReactor', src='/images/logo.png')
