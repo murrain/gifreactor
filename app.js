@@ -70,13 +70,13 @@ app.get('/:id(\\d+)', function(req,res){
         connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){        
           if (err) console.log(err);                                                                    
           images = JSON.stringify(rows);                                                                
-          res.render('random', { images:images, title: title});                                                       
+          res.render('index', { images:images, title: title});                                                       
         });                                                                                             
       }                                                                                                 
       else                                                                                              
       {                                                                                                 
         images = JSON.stringify(rows);                                                                  
-        res.render('random', { images:images, title: title});                                                         
+        res.render('index', { images:images, title: title});                                                         
       }                                                                                                 
       connection.end();                                                                                 
     });                                                                                                 
