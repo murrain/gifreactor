@@ -61,7 +61,7 @@ app.get('/', function(req,res){
   res.render('index', { title: title });
 });
 
-app.get('/:id(\\d+))', function(req,res){
+app.get('/:id(\\d+)', function(req,res){
   pool.getConnection(function(err,connection) {
     connection.query('SELECT * FROM gifs WHERE id = ?',req.params.id, function(err,rows,fields){
       if(err || rows.length < 1)
