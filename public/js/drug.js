@@ -1,5 +1,5 @@
 (function() {
-  var Analytics, Drug, Search, Util,
+  var AddThis, Drug, GoogleAnalytics, Search, Util,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Util = (function() {
@@ -51,10 +51,10 @@
 
   })();
 
-  Analytics = (function() {
-    function Analytics() {}
+  GoogleAnalytics = (function() {
+    function GoogleAnalytics() {}
 
-    Analytics.init = function(webPropertyId) {
+    GoogleAnalytics.init = function(webPropertyId) {
       var scriptTag;
       this._initQueue(webPropertyId);
       scriptTag = this._createScriptTag();
@@ -62,7 +62,7 @@
       return true;
     };
 
-    Analytics._initQueue = function(webPropertyId) {
+    GoogleAnalytics._initQueue = function(webPropertyId) {
       if (window._gaq == null) {
         window._gaq = [];
       }
@@ -70,7 +70,7 @@
       return window._gaq.push(['_trackPageview']);
     };
 
-    Analytics._createScriptTag = function() {
+    GoogleAnalytics._createScriptTag = function() {
       var protocol, scriptTag, subdomain;
       scriptTag = document.createElement('script');
       scriptTag.type = 'text/javascript';
@@ -81,17 +81,17 @@
       return scriptTag;
     };
 
-    Analytics._injectScriptTag = function(scriptTag) {
+    GoogleAnalytics._injectScriptTag = function(scriptTag) {
       var firstScriptTag;
       firstScriptTag = document.getElementsByTagName('script')[0];
       return firstScriptTag.parentNode.insertBefore(scriptTag, firstScriptTag);
     };
 
-    Analytics.trackPageView = function(url) {
+    GoogleAnalytics.trackPageView = function(url) {
       return window._gaq.push(['_trackPageview', url]);
     };
 
-    Analytics.trackEvent = function(category, action, label, value, nonInteraction) {
+    GoogleAnalytics.trackEvent = function(category, action, label, value, nonInteraction) {
       var argument, trackedEvent, _i, _len, _ref;
       if (label == null) {
         label = null;
@@ -115,9 +115,44 @@
       return window._gaq.push(trackedEvent);
     };
 
-    return Analytics;
+    return GoogleAnalytics;
 
   })();
+
+  AddThis = (function() {
+    function AddThis() {}
+
+    AddThis.init = function() {
+      var eventType, _i, _len, _ref, _results;
+      _ref = ['ready', 'menu.open', 'menu.close', 'menu.share', 'user.clickback'];
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        eventType = _ref[_i];
+        try {
+          _results.push(addthis.addEventListener("addthis." + eventType, this._eventHandler));
+        } catch (_error) {}
+      }
+      return _results;
+    };
+
+    AddThis._eventHandler = function(eventObject) {
+      switch (eventObject.type) {
+        case 'addthis.ready':
+          break;
+        case 'addthis.menu.open':
+          break;
+        case 'addthis.menu.close':
+          break;
+        case 'addthis.menu.share':
+          break;
+        case 'addthis.user.clickback':
+          break;
+      }
+    };
+
+    return AddThis;
+
+  }).call(this);
 
   Drug = (function() {
     function Drug() {}
@@ -134,11 +169,9 @@
 
     Drug._loading = false;
 
-    Drug._id = null;
+    Drug._queue = window._queue;
 
-    Drug._queue = [];
-
-    Drug._index = 0;
+    Drug._index = 1;
 
     Drug._instructionsTimeoutId = null;
 
@@ -149,12 +182,18 @@
     Drug._scrubbing = false;
 
     Drug.init = function() {
-      var _this = this;
+      var image,
+        _this = this;
+      if (/^#\d+$/.test(location.hash)) {
+        window.location = '/' + location.hash.slice(1);
+      }
+      if (/^#!\d+$/.test(location.hash)) {
+        window.location = '/' + location.hash.slice(2);
+      }
       if (!$('#image').length) {
         return false;
       }
       Util.preventRubberBand();
-      $(window).on('hashchange', this._hashChange);
       $(document).on('keyup', this._keyUp);
       $('#image').on('click', this._click);
       $('#image').hammer().on('swipeleft', this._swipeLeft);
@@ -172,7 +211,6 @@
       $('#progress a div').on('mouseup', this._release);
       $('#progress a div').hammer().on('dragstart', this._grab);
       $('#progress a div').hammer().on('dragend', this._release);
-      this._next(true, false);
       this._instructionsTimeoutId = setTimeout(function() {
         var _ref;
         _ref = [true, null], _this._instructing = _ref[0], _this._instructionsTimeoutId = _ref[1];
@@ -187,6 +225,18 @@
           }, 1000);
         });
       }, 3000);
+      history.replaceState(null, null, "/" + (this._category()) + window._queue[0].id);
+      this._initVideo();
+      Util.preload((function() {
+        var _i, _len, _ref, _results;
+        _ref = this._queue;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          image = _ref[_i];
+          _results.push(image.url);
+        }
+        return _results;
+      }).call(this));
       return true;
     };
 
@@ -218,17 +268,7 @@
       $('#play-pause').attr('title', Drug._mode === 'image' ? 'Play (up arrow)' : 'Pause (down arrow)');
       $('#play-pause').attr('alt', Drug._mode === 'image' ? 'Play (up arrow)' : 'Pause (down arrow)');
       image = Drug._queue[Drug._index - 1];
-      return Analytics.trackEvent('Videos', (Drug._mode === 'image' ? 'Pause' : 'Play'), "#" + image.id + " - " + image.video.title);
-    };
-
-    Drug._hashChange = function() {
-      var id;
-      Drug._switchMode('image');
-      id = parseInt(location.hash.slice(2), 10);
-      if (Drug._id !== id) {
-        Drug._next(true);
-      }
-      return false;
+      return GoogleAnalytics.trackEvent('Videos', (Drug._mode === 'image' ? 'Pause' : 'Play'), "#" + image.id + " - " + image.video.title);
     };
 
     Drug._keyUp = function(eventObject) {
@@ -238,7 +278,7 @@
       }
       if (Drug._mode === 'image') {
         if (_ref = eventObject.which, __indexOf.call(Drug._NEXT_KEYS, _ref) >= 0) {
-          Drug._next(false);
+          Drug._next();
         }
         if (_ref1 = eventObject.which, __indexOf.call(Drug._PREV_KEYS, _ref1) >= 0) {
           Drug._prev();
@@ -263,7 +303,7 @@
         return false;
       }
       Drug._switchMode('image');
-      Drug._next(false);
+      Drug._next();
       return false;
     };
 
@@ -280,7 +320,7 @@
         return false;
       }
       Drug._switchMode('image');
-      Drug._next(false);
+      Drug._next();
       return false;
     };
 
@@ -342,17 +382,11 @@
       return $('#progress').val(video.currentTime * 100 / video.duration);
     };
 
-    Drug._next = function(fullPageLoad, trackPageView) {
-      var params, shown, url;
-      if (trackPageView == null) {
-        trackPageView = true;
-      }
-      if (!fullPageLoad && trackPageView) {
-        clearTimeout(Drug._instructionsTimeoutId);
-      }
+    Drug._next = function() {
+      var params, shown, url, _ref;
+      clearTimeout(Drug._instructionsTimeoutId);
       url = "/images/" + (Drug._category()) + "random.json";
-      params = Drug._params(fullPageLoad);
-      shown = fullPageLoad ? false : Drug._show();
+      _ref = [Drug._params(), Drug._show()], params = _ref[0], shown = _ref[1];
       return $.ajax({
         url: url,
         dataType: 'json',
@@ -369,8 +403,8 @@
           }
         }
       }).done(function(images) {
-        var image;
-        Drug._enqueue(fullPageLoad, images);
+        var image, _ref1;
+        (_ref1 = Drug._queue).push.apply(_ref1, images);
         if (!shown) {
           shown = Drug._show();
         }
@@ -385,21 +419,24 @@
         })());
       }).always(function() {
         Drug._loading = false;
-        if (trackPageView && shown) {
-          return Analytics.trackPageView("/" + (Drug._category()) + "next");
+        if (shown) {
+          return GoogleAnalytics.trackPageView("/" + (Drug._category()) + "next");
         }
       });
     };
 
     Drug._prev = function() {
       if (this._show(false)) {
-        return Analytics.trackPageView("/" + (this._category()) + "prev");
+        return GoogleAnalytics.trackPageView("/" + (this._category()) + "prev");
       }
     };
 
     Drug._category = function() {
       var category;
-      category = location.pathname.slice(1);
+      category = location.pathname.slice(1).split('/')[0];
+      if (/^\d+$/.test(category)) {
+        return '';
+      }
       if (category) {
         return category + '/';
       } else {
@@ -407,24 +444,18 @@
       }
     };
 
-    Drug._params = function(fullPageLoad) {
-      var id, index, params;
+    Drug._params = function() {
+      var params;
       params = {};
       params.count = Util.mobile || Util.tablet ? 3 : 6;
-      if (fullPageLoad) {
-        index = location.hash.charAt(1) === '!' ? 2 : 1;
-        id = parseInt(location.hash.slice(index), 10);
-        if (id) {
-          params.id = id;
-        }
-      } else if (this._queue.length - this._index > params.count / 2) {
+      if (this._queue.length - this._index > params.count / 2) {
         params.count = 0;
       }
       return params;
     };
 
     Drug._show = function(next) {
-      var image;
+      var image, title;
       if (next == null) {
         next = true;
       }
@@ -435,34 +466,33 @@
         return false;
       }
       image = this._queue[next ? this._index++ : --this._index - 1];
-      this._id = image.id;
-      location.replace("#!" + image.id);
+      history.replaceState(null, null, "/" + (this._category()) + image.id);
+      title = 'The Worst Drug - ';
+      title += image.video != null ? image.video.title : 'Social Porn';
+      document.title = title;
       if ($('#video').length) {
         video.pause();
         $('#video').remove();
       }
       if (image.video_html != null) {
         $('#image').before(image.video_html);
+      }
+      this._initVideo();
+      $('#image').fadeOut(100, function() {
+        $('#image').css('background-image', "url(" + image.url + ")");
+        return $('#image').fadeIn(100);
+      });
+      return true;
+    };
+
+    Drug._initVideo = function() {
+      if ($('#video').length) {
         $('#video').on('loadedmetadata', this._loadedMetadata);
         $('#video').on('timeupdate', this._timeUpdate);
         $('#video').on('pause', this._pause);
         $('#video').on('ended', this._ended);
       }
-      $('#image').fadeOut(100, function() {
-        $('#image').css('background-image', "url(" + image.url + ")");
-        $('#image').fadeIn(100);
-        return $('#play-pause')[$('#video').length ? 'fadeIn' : 'fadeOut'](100);
-      });
-      return true;
-    };
-
-    Drug._enqueue = function(fullPageLoad, images) {
-      var _ref, _ref1;
-      if (fullPageLoad) {
-        return _ref = [images, 0], this._queue = _ref[0], this._index = _ref[1], _ref;
-      } else {
-        return (_ref1 = this._queue).push.apply(_ref1, images);
-      }
+      return $('#play-pause')[$('#video').length ? 'fadeIn' : 'fadeOut'](100);
     };
 
     return Drug;
@@ -489,7 +519,8 @@
   })();
 
   $(function() {
-    Analytics.init('UA-42894652-2');
+    GoogleAnalytics.init('UA-2153971-6');
+    AddThis.init();
     Drug.init();
     return Search.init();
   });
