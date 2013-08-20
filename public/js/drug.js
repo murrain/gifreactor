@@ -467,8 +467,8 @@
       }
       image = this._queue[next ? this._index++ : --this._index - 1];
       history.replaceState(null, null, "/" + (this._category()) + image.id);
-      title = 'The Worst Drug - ';
-      title += image.video != null ? image.video.title : 'Social Porn';
+      title = 'GifReactor - ';
+      title += image.video != null ? image.video.title : 'GR';
       document.title = title;
       if ($('#video').length) {
         video.pause();

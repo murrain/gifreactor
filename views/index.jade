@@ -1,7 +1,7 @@
 !!! 5
 html(lang='en', style='background-color: #000000;')
 head
-    title =title
+    title= title
     meta(charset='utf-8')
     meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', name='description')
     link(href='/stylesheets/vendor/nouislider.space.css', rel='stylesheet', type='text/css')
@@ -9,8 +9,8 @@ head
     link(href='/stylesheets/screen.css', rel='stylesheet', type='text/css')
     link(href='http://fonts.googleapis.com/css?family=Questrial', rel='stylesheet', type='text/css')
     link(href='/images/icon-128x128.png', rel='icon', type='image/png')
-    link(href='http://images.theworstdrug.com/', rel='dns-prefetch')
-    link(href='http://videos.theworstdrug.com/', rel='dns-prefetch')
+    link(href='http://images.gifreactor.com/', rel='dns-prefetch')
+    link(href='http://videos.gifreactor.com/', rel='dns-prefetch')
     link(href='/images/logo.png', rel='prefetch')
     link(href='/images/play.png', rel='prefetch')
     link(href='/images/pause.png', rel='prefetch')
@@ -64,7 +64,7 @@ head
     section
       #instructions(style='background-image: url(/images/click.png);')
       if images.length >= 1
-        a#image(style='background-image: url('+images[0].url+');')
+        a#image(style='background-image: url('{images[0].url}')')
         script
           window._queue = !{images_string}
       else  
