@@ -1,7 +1,7 @@
 !!! 5
 html(lang='en', style='background-color: #000000;')
 head
-    title= title
+    title =title
     meta(charset='utf-8')
     meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', name='description')
     link(href='/stylesheets/vendor/nouislider.space.css', rel='stylesheet', type='text/css')
@@ -39,9 +39,10 @@ head
     meta(content='summary', name='twitter:card')
     meta(content='@GifReactor', name='twitter:site')
     meta(content='GifReactor', name='twitter:title')
-    meta(content='Click the gif, hit the right arrow key, or swipe on mobile. NSFW, 18+', name='twitter:description')
+    meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', name='twitter:description')
     meta(content='images/icon-144x144.png', name='twitter:image:src')
     meta(content='gifreactor.com', name='twitter:domain')
+    meta(property='og:image', content= '#{images[0].url}')
   body
     header
       ul.addthis_toolbox
@@ -65,7 +66,7 @@ head
       if images.length >= 1
         a#image(style='background-image: url('+images[0].url+');')
         script
-          window._queue = !{images}
+          window._queue = !{images_string}
       else  
         a#image
     footer
