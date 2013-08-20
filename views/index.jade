@@ -62,7 +62,7 @@ head
             img(alt='Share on Reddit', src='/images/Reddit.png', title='Share on Reddit')
     section
       #instructions(style='background-image: url(/images/click.png);')
-      if images
+      if images.length >= 1
         a#image(style='background-image: url('+images[0].url+');')
       else  
         a#image
