@@ -59,6 +59,7 @@ var pool = mysql.createPool({
 
 app.get('/', function(req,res){
   pool.getConnection(function(err,connection) {
+    if(err) console.log(err);
     connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
       if (err) console.log(err);
       images_string = JSON.stringify(rows);
@@ -72,6 +73,7 @@ app.get('/', function(req,res){
 app.get('/:id(\\d+)', function(req,res){
   console.log("id: " + req.params.id);
   pool.getConnection(function(err,connection) {
+    if(err) console.log(err);
     connection.query('SELECT * FROM gifs WHERE id = ?',req.params.id, function(err,rows,fields){
       if(err || rows.length < 1)
       {
@@ -90,9 +92,10 @@ app.get('/:id(\\d+)', function(req,res){
   });    
 });
 
-app.get('/:category', function(req,res){
+app.get('/:category([A-Za-z]+)', function(req,res){
   console.log("category: "+ req.params.category);
   pool.getConnection(function(err,connection) {
+    if(err) console.log(err);
     connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5',req.params.category, function(err,rows,fields) {
       if (err) console.log(err)
       if( rows.length < 1)
@@ -110,9 +113,10 @@ app.get('/:category', function(req,res){
   });  
 });
 
-app.get('/:category/:id(\\d+)', function(req,res){
+app.get('/:category([A-Za-z]+)/:id(\\d+)', function(req,res){
   console.log("category: "+ req.params.category);
   pool.getConnection(function(err,connection) {
+    if(err) console.log(err);
     connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND gifs.id = ? AND tags.tag = ? ORDER BY RAND() LIMIT 5',[req.params.id,req.params.category], function(err,rows,fields) {
       if (err) console.log(err)
       if( rows.length < 1)
@@ -134,6 +138,7 @@ app.get('/images/random.json', function(req,res){
   if (req.query.id)
   {
     pool.getConnection(function(err,connection) {
+      if(err) console.log(err);
       connection.query('SELECT * FROM gifs WHERE id = ?',req.query.id, function(err,rows,fields){
         if(err || rows.length < 1)
         {
@@ -156,6 +161,7 @@ app.get('/images/random.json', function(req,res){
   else                                                                                                    
   {                                                                                                       
     pool.getConnection(function(err,connection){                                                          
+      if(err) console.log(err);
       connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){            
         if (err) console.log(err);                                                                        
         images = JSON.stringify(rows);                                                                    
