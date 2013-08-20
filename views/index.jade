@@ -8,15 +8,15 @@ head
     link(href='/stylesheets/vendor/html5-doctor-reset-stylesheet.min.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/screen.css', rel='stylesheet', type='text/css')
     link(href='http://fonts.googleapis.com/css?family=Questrial', rel='stylesheet', type='text/css')
-    link(href='http://gifreactor.com/images/icon-128x128.png', rel='icon', type='image/png')
-    link(href='http://images.gifreactor.com/', rel='dns-prefetch')
-    link(href='http://videos.gifreactor.com/', rel='dns-prefetch')
+    link(href='/images/icon-128x128.png', rel='icon', type='image/png')
+    link(href='http://images.theworstdrug.com/', rel='dns-prefetch')
+    link(href='http://videos.theworstdrug.com/', rel='dns-prefetch')
     link(href='/images/logo.png', rel='prefetch')
     link(href='/images/play.png', rel='prefetch')
     link(href='/images/pause.png', rel='prefetch')
     link(href='/images/click.png', rel='prefetch')
     link(href='/images/swipe.png', rel='prefetch')
-    link(href='humans.txt', rel='author')
+    link(href='/humans.txt', rel='author')
     meta(content='yes', name='apple-mobile-web-app-capable')
     meta(content='black-translucent', name='apple-mobile-web-app-status-bar-style')
     meta(content='width=device-width, initial-scale=1.0, user-scalable=no', name='viewport')
@@ -31,7 +31,35 @@ head
     link(href='/images/icon-72x72.png', rel='apple-touch-icon-precomposed', sizes='72x72')
     link(href='/images/icon-144x144.png', rel='apple-touch-icon-precomposed', sizes='144x144')
     link(href='/images/icon-128x128.png', rel='apple-touch-startup-image')
+    meta(content='Gifs', property='og:title')
+    meta(content='GifReactor', property='og:site_name')
+    meta(content='http://gifreactor.com/', property='og:url')
+    meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', property='og:description')
+    meta(content='website', property='og:type')
+    meta(content='summary', name='twitter:card')
+    meta(content='@GifReactor', name='twitter:site')
+    meta(content='GifReactor', name='twitter:title')
+    meta(content='Click the gif, hit the right arrow key, or swipe on mobile. NSFW, 18+', name='twitter:description')
+    meta(content='images/icon-144x144.png', name='twitter:image:src')
+    meta(content='gifreactor.com', name='twitter:domain')
   body
+    header
+      ul.addthis_toolbox
+        li
+          a.addthis_button_facebook
+            img(alt='Share on Facebook', src='images/Facebook.png', title='Share on Facebook')
+        li
+          a.addthis_button_twitter
+            img(alt='Share on Twitter', src='/images/Twitter.png', title='Share on Twitter')
+        li
+          a.addthis_button_google_plusone_share
+            img(alt='Share on Google+', src='/images/GooglePlus.png', title='Share on Google+')
+        li
+          a.addthis_button_tumblr
+            img(alt='Share on Tumblr', src='/images/Tumblr.png', title='Share on Tumblr')
+        li
+          a.addthis_button_reddit
+            img(alt='Share on Reddit', src='/images/Reddit.png', title='Share on Reddit')
     section
       #instructions(style='background-image: url(/images/click.png);')
       a#image
@@ -39,34 +67,27 @@ head
       a#logo(href='http://gifreactor.com/', title='GifReactor')
         img(alt='GifReactor', src='/images/logo.png')
       ul#buttons
-        ul.addthis_toolbox
-          li
-            a.addthis_button_facebook.at300b(title='Facebook',href='#')
-              img(src='/images/Facebook.png')
-          li
-            a.addthis_button_twitter.at300b(title='tweet',href='#')
-              img(src='/images/Twitter.png')
-          li
-            a.addthis_button_reddit.at300b(title='reddit',href='#')
-              img(src='/images/Reddit.png')
         li
           img#play-pause(alt='Play (up arrow)', src='/images/play.png', title='Play (up arrow)')
       #progress.noUiSlider
     //if lt IE 9
       script(src='http://code.jquery.com/jquery-1.10.2.min.js')
       script
-        window.jQuery || document.write('<script src="/js/vendor/jquery.js"><\\/script>')
+        window.jQuery || document.write('<script src="/javascripts/vendor/jquery-1.10.2.min.js"><\\/script>')
     //if gte IE 9
     script(src='http://code.jquery.com/jquery-2.0.3.min.js')
     script
-      window.jQuery || document.write('<script src="/js/vendor/jquery.js"><\\/script>')
+      window.jQuery || document.write('<script src="/javascripts/vendor/jquery-2.0.3.min.js"><\\/script>')
     //
       [endif]
+    script
+      var addthis_config = {
+      data_track_clickback: true,
+      data_ga_property: 'UA-42894652-2',
+      data_ga_social: true
+      }
     script(src='/js/vendor/hammer.min.js')
     script(src='/js/vendor/jquery.hammer.min.js')
     script(src='/js/vendor/jquery.nouislider.min.js')
+    script(src='http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51feeb004256bccd')
     script(src='/js/drug.js')
-    script(type='text/javascript')
-      var addthis_config = {"data_track_addressbar":true};
-    script(type='text/javascript', src='//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-520037966486c21f')
-
