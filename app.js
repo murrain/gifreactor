@@ -92,7 +92,7 @@ app.get('/:id(\\d+)', function(req,res){
   });    
 });
 
-app.get('/:category([A-Za-z]+)', function(req,res){
+app.get('/:category', function(req,res){
   console.log("category: "+ req.params.category);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
@@ -113,7 +113,7 @@ app.get('/:category([A-Za-z]+)', function(req,res){
   });  
 });
 
-app.get('/:category([A-Za-z]+)/:id(\\d+)', function(req,res){
+app.get('/:category/:id(\\d+)', function(req,res){
   console.log("category: "+ req.params.category);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
