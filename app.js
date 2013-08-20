@@ -61,12 +61,12 @@ app.get('/', function(req,res){
   res.render('index', { title: title });
 });
 
-app.get(/^\d+$/, function(req,res){
+app.get('/:id(\\d+))', function(req,res){
   pool.getConnection(function(err,connection) {
-    connection.query('SELECT * FROM gifs WHERE id = ?',req.params[0], function(err,rows,fields){
+    connection.query('SELECT * FROM gifs WHERE id = ?',req.params.id, function(err,rows,fields){
       if(err || rows.length < 1)
       {
-        console.log('No gif with id ' + req.params[0]+ ' '+ err);
+        console.log('No gif with id ' + req.params.id+ ' '+ err);
         connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){        
           if (err) console.log(err);                                                                    
           images = JSON.stringify(rows);                                                                
