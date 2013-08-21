@@ -63,9 +63,8 @@ app.get('/', function(req,res){
     if(err) console.log(err);
     connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
       if (err) console.log(err);
-      console.log(rows);
       images_string = JSON.stringify(rows);
-      res.render('index', { images:rows, images_string: images_string, title: title});
+      res.render('index', { image:rows[0], images_string: images_string, title: title});
       connection.end();
     });
   });
@@ -84,7 +83,8 @@ app.get('/:id(\\d+)', function(req,res){
       else                                                                                              
       { 
         images_string = JSON.stringify(rows);
-        res.render('index', { images:rows, images_string: images_string, title: title});
+        console.log(rows);
+        res.render('index', { image:rows[0], images_string: images_string, title: title});
       }                                                                                                 
       connection.end();                                                                                 
     });                                                                                                 
@@ -96,15 +96,14 @@ app.get('/:category', function(req,res){
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
     connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5',req.params.category, function(err,rows,fields) {
-      if (err) console.log(err)
-      if( rows.length < 1)
+      if(err || rows.length < 1)
       {
         res.redirect("/");
       }
       else
       {
         images_string = JSON.stringify(rows);
-        res.render('index', { images:rows, images_string: images_string, title: title});
+        res.render('index', { image:rows[0], images_string: images_string, title: title});
       }
       connection.end(); 
     });
@@ -116,15 +115,14 @@ app.get('/:category/:id(\\d+)', function(req,res){
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
     connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND gifs.id = ? AND tags.tag = ? ORDER BY RAND() LIMIT 5',[req.params.id,req.params.category], function(err,rows,fields) {
-      if (err) console.log(err)
-      if( rows.length < 1)
+      if(err || rows.length < 1)
       {
         res.redirect("/"+req.params.category);
       }
       else
       {
         images_string = JSON.stringify(rows);
-        res.render('index', { images:rows, images_string: images_string, title: title});
+        res.render('index', { image:rows[0], images_string: images_string, title: title});
       }
       connection.end();
     });

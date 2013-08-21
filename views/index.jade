@@ -41,8 +41,8 @@ head
     meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', name='twitter:description')
     meta(content='images/icon-144x144.png', name='twitter:image:src')
     meta(content='gifreactor.com', name='twitter:domain')
-    if(images)
-      meta(property='og:image', content= '#{images[0].url}')
+    if(image)
+      meta(property='og:image', content= '#{image.url}')
   body
     header
       ul.addthis_toolbox
@@ -63,8 +63,8 @@ head
             img(alt='Share on Reddit', src='/images/Reddit.png', title='Share on Reddit')
     section
       #instructions(style='background-image: url(/images/click.png);')
-      if(images)
-        a#image(style='background-image: url('+images[0].url+');')
+      if(image)
+        a#image(style='background-image: url('+image.url+');')
         script
           window._queue = !{images_string}
       else  
