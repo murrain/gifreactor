@@ -63,6 +63,7 @@ app.get('/', function(req,res){
     if(err) console.log(err);
     connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
       if (err) console.log(err);
+      console.log(rows);
       images_string = JSON.stringify(rows);
       res.render('index', { images:rows, images_string: images_string, title: title});
       connection.end();
