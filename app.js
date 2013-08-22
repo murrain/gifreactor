@@ -11,6 +11,8 @@ var flash = require('connect-flash')
   , path = require('path')
   , async = require('async');
 
+var site = require('./site');
+
 var app = express();
 var server = http.createServer(app)
 
@@ -42,19 +44,17 @@ process.on('uncaughtException', function (error) {
    console.log(error.stack);
 });
 
-var title = 'GifReactor';
-
 app.get('/mu-51b3d246-acc75319-c960211f-673bde03', function(req,res){
   res.render('blitz', { title: title });
 });
 
 var mysql      = require('mysql');
 var pool = mysql.createPool({
-  host     : '127.0.0.1',
-  port     : '3307',
-  user     : 'root',
-  password : 'kegr6tpxfwdkpgmm',
-  database : 'gifreactor'
+  host     : site.mysql.host,
+  port     : site.mysql.port,
+  user     : site.mysql.user,
+  password : site.mysql.password,
+  database : site.mysql.database
 });
 
 app.get('/', function(req,res){
@@ -64,7 +64,7 @@ app.get('/', function(req,res){
     connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
       if (err) console.log(err);
       images_string = JSON.stringify(rows);
-      res.render('index', { image:rows[0], images_string: images_string, title: title});
+      res.render('index', { site: site, image:rows[0], images_string: images_string});
       connection.end();
     });
   });
@@ -84,7 +84,7 @@ app.get('/:id(\\d+)', function(req,res){
       { 
         images_string = JSON.stringify(rows);
         console.log(rows);
-        res.render('index', { image:rows[0], images_string: images_string, title: title});
+        res.render('index', { site:site, image:rows[0], images_string: images_string});
       }                                                                                                 
       connection.end();                                                                                 
     });                                                                                                 
@@ -103,7 +103,7 @@ app.get('/:category', function(req,res){
       else
       {
         images_string = JSON.stringify(rows);
-        res.render('index', { image:rows[0], images_string: images_string, title: title});
+        res.render('index', { site: site, image:rows[0], images_string: images_string});
       }
       connection.end(); 
     });
@@ -122,7 +122,7 @@ app.get('/:category/:id(\\d+)', function(req,res){
       else
       {
         images_string = JSON.stringify(rows);
-        res.render('index', { image:rows[0], images_string: images_string, title: title});
+        res.render('index', { site: site, image:rows[0], images_string: images_string});
       }
       connection.end();
     });
@@ -141,13 +141,13 @@ app.get('/images/random.json', function(req,res){
           connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){        
             if (err) console.log(err);                                                                    
             images = JSON.stringify(rows);                                                                
-            res.render('random', { images:images, title: title});                                                       
+            res.render('random', { site: site, images:images});                                                       
           });                                                                                             
         }                                                                                                 
         else                                                                                              
         {                                                                                                 
           images = JSON.stringify(rows);                                                                  
-          res.render('random', { images:images, title: title});                                                         
+          res.render('random', { site: site, images:images});                                                         
         }                                                                                                 
         connection.end();                                                                                 
       });                                                                                                 
@@ -160,7 +160,7 @@ app.get('/images/random.json', function(req,res){
       connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){            
         if (err) console.log(err);                                                                        
         images = JSON.stringify(rows);                                                                    
-        res.render('random', { images:images});                                                           
+        res.render('random', { site: site, images:images});                                                           
         connection.end();                                                                                 
       });                                                                                                 
     });                                                                                                   
@@ -179,13 +179,13 @@ app.get('/images/:category/random.json', function(req,res){
           connection.query('SELECT gifs.* FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category, function(err,rows,fields){
             if (err) console.log(err);                                                                         
             images = JSON.stringify(rows);                                                                     
-            res.render('random', { images:images});                                                            
+            res.render('random', { site: site, images:images});                                                            
           });                                                                                                  
         }                                                                                                      
         else                                                                                                   
         {                                                                                                      
           images = JSON.stringify(rows);                                                                       
-          res.render('random', { images:images});                                                              
+          res.render('random', { site: site, images:images});                                                              
         }                                                                                                      
         connection.end();                                                                                      
       });                                                                                                      
@@ -198,7 +198,7 @@ app.get('/images/:category/random.json', function(req,res){
       connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category,function(err,rows,fields){                 
         if (err) console.log(err);                                                                             
         images = JSON.stringify(rows);
-        res.render('random', { images:images});                                                                
+        res.render('random', { site: site, images:images});                                                                
         connection.end();                                                                                      
       });                                                                                                      
     });                                                                                                        
@@ -209,5 +209,3 @@ app.get('/images/:category/random.json', function(req,res){
 server.listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
-
-

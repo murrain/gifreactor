@@ -3,14 +3,14 @@ html(lang='en', style='background-color: #000000;')
 head
     title= title
     meta(charset='utf-8')
-    meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', name='description')
+    meta(content='#{site.description}', name='description')
     link(href='/stylesheets/vendor/nouislider.space.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/vendor/html5-doctor-reset-stylesheet.min.css', rel='stylesheet', type='text/css')
     link(href='/stylesheets/screen.css', rel='stylesheet', type='text/css')
     link(href='http://fonts.googleapis.com/css?family=Questrial', rel='stylesheet', type='text/css')
     link(href='/images/icon-128x128.png', rel='icon', type='image/png')
-    link(href='http://images.gifreactor.com/', rel='dns-prefetch')
-    link(href='http://videos.gifreactor.com/', rel='dns-prefetch')
+    link(href='#{site.images_domain}', rel='dns-prefetch')
+    link(href='#{site.videos_domain}', rel='dns-prefetch')
     link(href='/images/logo.png', rel='prefetch')
     link(href='/images/play.png', rel='prefetch')
     link(href='/images/pause.png', rel='prefetch')
@@ -31,16 +31,16 @@ head
     link(href='/images/icon-72x72.png', rel='apple-touch-icon-precomposed', sizes='72x72')
     link(href='/images/icon-144x144.png', rel='apple-touch-icon-precomposed', sizes='144x144')
     link(href='/images/icon-128x128.png', rel='apple-touch-startup-image')
-    meta(content='Gifs', property='og:title')
-    meta(content='GifReactor', property='og:site_name')
-    meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', property='og:description')
+    meta(content='Animted Gifs', property='og:title')
+    meta(content='#{site.title}', property='og:site_name')
+    meta(content='#{site.description}', property='og:description')
     meta(content='website', property='og:type')
     meta(content='summary', name='twitter:card')
-    meta(content='@GifReactor', name='twitter:site')
-    meta(content='GifReactor', name='twitter:title')
+    meta(content='@#{site.title}', name='twitter:site')
+    meta(content='#{site.title}', name='twitter:title')
     meta(content='Click the gif, hit the right arrow key, or swipe on mobile.', name='twitter:description')
     meta(content='images/icon-144x144.png', name='twitter:image:src')
-    meta(content='gifreactor.com', name='twitter:domain')
+    meta(content='#{site.domain}', name='twitter:domain')
     if(image)
       meta(property='og:image', content= '#{image.url}')
   body
@@ -70,8 +70,8 @@ head
       else  
         a#image
     footer
-      a#logo(href='http://gifreactor.com/', title='GifReactor')
-        img(alt='GifReactor', src='/images/logo.png')
+      a#logo(href='#{site.domain}', title='#{site.title}')
+        img(alt='#{site.title}', src='/images/logo.png')
       ul#buttons
         li
           img#play-pause(alt='Play (up arrow)', src='/images/play.png', title='Play (up arrow)')
@@ -89,7 +89,7 @@ head
     script
       var addthis_config = {
       data_track_clickback: true,
-      data_ga_property: 'UA-42894652-2',
+      data_ga_property: '#{site.google_analytics}',
       data_ga_social: true
       }
     script(src='/js/vendor/hammer.min.js')
