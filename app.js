@@ -74,7 +74,7 @@ app.get('/:id(\\d+)', function(req,res){
   console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw" AND id = ?',req.params.id, function(err,rows,fields){
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw" AND gifs.id = ?',req.params.id, function(err,rows,fields){
       if(err || rows.length < 1)
       {
         console.log('No gif with id ' + req.params.id+ ' '+ err);
