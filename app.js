@@ -61,7 +61,7 @@ app.get('/', function(req,res){
   console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
-    connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw" ORDER BY RAND() LIMIT 5',function(err,rows,fields){
       if (err) console.log(err);
       images_string = JSON.stringify(rows);
       res.render('index', { site: site, image:rows[0], images_string: images_string});
@@ -74,7 +74,7 @@ app.get('/:id(\\d+)', function(req,res){
   console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
-    connection.query('SELECT * FROM gifs WHERE id = ?',req.params.id, function(err,rows,fields){
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw" AND id = ?',req.params.id, function(err,rows,fields){
       if(err || rows.length < 1)
       {
         console.log('No gif with id ' + req.params.id+ ' '+ err);
@@ -130,79 +130,27 @@ app.get('/:category/:id(\\d+)', function(req,res){
 });
 
 app.get('/images/random.json', function(req,res){
-  if (req.query.id)
-  {
-    pool.getConnection(function(err,connection) {
-      if(err) console.log(err);
-      connection.query('SELECT * FROM gifs WHERE id = ?',req.query.id, function(err,rows,fields){
-        if(err || rows.length < 1)
-        {
-          console.log('No gif with id ' + req.query.id+ ' '+ err);
-          connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){        
-            if (err) console.log(err);                                                                    
-            images = JSON.stringify(rows);                                                                
-            res.render('random', { site: site, images:images});                                                       
-          });                                                                                             
-        }                                                                                                 
-        else                                                                                              
-        {                                                                                                 
-          images = JSON.stringify(rows);                                                                  
-          res.render('random', { site: site, images:images});                                                         
-        }                                                                                                 
-        connection.end();                                                                                 
-      });                                                                                                 
-    });                                                                                                   
-  } 
-  else 
-  {                                                                                                     
-    pool.getConnection(function(err,connection){                                                          
-      if(err) console.log(err);
-      connection.query('SELECT * FROM gifs ORDER BY RAND() LIMIT 5',function(err,rows,fields){            
-        if (err) console.log(err);                                                                        
-        images = JSON.stringify(rows);                                                                    
-        res.render('random', { site: site, images:images});                                                           
-        connection.end();                                                                                 
-      });                                                                                                 
-    });                                                                                                   
-  }                                                                                                       
+  pool.getConnection(function(err,connection){                                                          
+    if(err) console.log(err);
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw"  ORDER BY RAND() LIMIT 5',function(err,rows,fields){            
+      if (err) console.log(err);                                                                        
+      images = JSON.stringify(rows);                                                                    
+      res.render('random', { site: site, images:images});                                                           
+      connection.end();                                                                                 
+    });                                                                                                 
+  });                                                                                                   
 });
 
 app.get('/images/:category/random.json', function(req,res){
-  if (req.query.id)
-  {
-    pool.getConnection(function(err,connection) {
-      if (err) console.log(err);
-      connection.query('SELECT * FROM gifs WHERE id = ?',req.query.id, function(err,rows,fields){
-        if(err || rows.length < 1)
-        {
-          console.log('No gif with id ' + req.query.id+ ' '+ err);
-          connection.query('SELECT gifs.* FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category, function(err,rows,fields){
-            if (err) console.log(err);                                                                         
-            images = JSON.stringify(rows);                                                                     
-            res.render('random', { site: site, images:images});                                                            
-          });                                                                                                  
-        }                                                                                                      
-        else                                                                                                   
-        {                                                                                                      
-          images = JSON.stringify(rows);                                                                       
-          res.render('random', { site: site, images:images});                                                              
-        }                                                                                                      
-        connection.end();                                                                                      
-      });                                                                                                      
-    });                                                                                                        
-  }                                                                                                            
-  else                                                                                                         
-  {                                                                                                            
-    pool.getConnection(function(err,connection){                                                               
-      if(err) console.log(err);
-      connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category,function(err,rows,fields){                 
-        if (err) console.log(err);                                                                             
-        images = JSON.stringify(rows);
-        res.render('random', { site: site, images:images});                                                                
-        connection.end();                                                                                      
-      });                                                                                                      
-    });                                                                                                        
-  }                                                                                                            
+  pool.getConnection(function(err,connection){                                                               
+    if(err) console.log(err);
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5', req.params.category,function(err,rows,fields){                 
+      if (err) console.log(err);                                                                             
+      images = JSON.stringify(rows);
+      res.render('random', { site: site, images:images});                                                                
+      connection.end();                                                                                      
+    });                                                                                                      
+  });
 }); 
 
 

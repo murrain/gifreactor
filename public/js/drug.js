@@ -519,7 +519,7 @@
   })();
 
   $(function() {
-    GoogleAnalytics.init('UA-2153971-6');
+    GoogleAnalytics.init('UA-42894652-2');
     AddThis.init();
     Drug.init();
     return Search.init();
