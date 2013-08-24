@@ -114,7 +114,7 @@ app.get('/:category/:id(\\d+)', function(req,res){
   console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND gifs.id = ? AND tags.tag = ? UNION (SELECT * FROM gifs,tags WHERE gifs.id=tags.gif_id AND tags.tag = ? ORDER BY rand() LIMIT 5)',[req.params.id,req.params.category, req.params.category], function(err,rows,fields) {
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND gifs.id = ? AND tags.tag = ? UNION (SELECT gifs.* FROM gifs,tags WHERE gifs.id=tags.gif_id AND tags.tag = ? ORDER BY rand() LIMIT 5)',[req.params.id,req.params.category, req.params.category], function(err,rows,fields) {
       if(err || rows.length < 1)
       {
         res.redirect("/"+req.params.category);
