@@ -57,11 +57,14 @@ var pool = mysql.createPool({
   database : site.mysql.database
 });
 
+var redis = require("redis"),
+client = redis.createClient();
+
 app.get('/', function(req,res){
   console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw" ORDER BY RAND() LIMIT 5',function(err,rows,fields){
+    connection.query('SELECT gifs.* FROM gifs WHERE id NOT IN (SELECT gifs.id FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = "nsfw") order by rand() limit 5',function(err,rows,fields){
       if (err) console.log(err);
       images_string = JSON.stringify(rows);
       res.render('index', { site: site, image:rows[0], images_string: images_string});
@@ -74,7 +77,7 @@ app.get('/:id(\\d+)', function(req,res){
   console.log(req.route);
   pool.getConnection(function(err,connection) {
     if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw" AND gifs.id = ? UNION (SELECT gifs.* FROM gifs ORDER BY rand() LIMIT 5)',req.params.id, function(err,rows,fields){
+    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND gifs.id = ? gifs.id NOT IN (SELECT gifs.id FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = "nsfw") order by rand() limit 5 UNION (SELECT gifs.* FROM gifs WHERE id NOT IN (SELECT gifs.id FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = "nsfw") order by rand() limit 5)',req.params.id, function(err,rows,fields){
       if(err || rows.length < 1)
       {
         console.log('No gif with id ' + req.params.id+ ' '+ err);
@@ -132,7 +135,7 @@ app.get('/:category/:id(\\d+)', function(req,res){
 app.get('/images/random.json', function(req,res){
   pool.getConnection(function(err,connection){                                                          
     if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag != "nsfw"  ORDER BY RAND() LIMIT 5',function(err,rows,fields){            
+    connection.query('SELECT gifs.* FROM gifs WHERE id NOT IN (SELECT gifs.id FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = "nsfw") order by rand() limit 5',function(err,rows,fields){
       if (err) console.log(err);                                                                        
       images = JSON.stringify(rows);                                                                    
       res.render('random', { site: site, images:images});                                                           
