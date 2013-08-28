@@ -1,0 +1,27 @@
+body
+{
+	font-family: 'Helvetica Neue', sans-serif;
+}
+
+#login_div
+{
+	margin: auto;
+	margin-top: 10%;
+	width: 335px;
+	height: 335px;
+	background-color: #2C3E50;
+	padding:25px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+#login_div h1, #login_div h2
+{
+	color: #ECF0F1;
+}
+
+input[type="text"], input[type="password"] 
+{
+	height: 47px;
+}

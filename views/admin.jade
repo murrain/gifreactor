@@ -1,0 +1,32 @@
+html
+  head
+    link(href='bootstrap/css/bootstrap.css', rel='stylesheet')
+    link(href='css/flat-ui.css', rel='stylesheet')
+    link(href='stylesheets/style.css', rel='stylesheet', type='text/css')
+    title= site.title
+  body(style='background: url("#{image}") no-repeat center center fixed; background-size: cover;')
+    #login_div
+      #login_top
+        h1= site.title
+        hr
+      form#login
+        .login-form
+          .control-group
+            input#login-name.login-field(type='text', value='', name='username', placeholder='Username')
+            label.login-field-icon.fui-user(for='login-name')
+          .control-group
+            input#login-pass.login-field(type='password', value='', name='password', placeholder='Password')
+            label.login-field-icon.fui-lock(for='login-pass')
+          input.btn.btn-inverse.btn-large.btn-block(type='submit') Login
+    script(src='js/jquery-1.8.3.min.js')
+    script(src='js/jquery-ui-1.10.3.custom.min.js')
+    script(src='js/jquery.ui.touch-punch.min.js')
+    script(src='js/bootstrap.min.js')
+    script(src='js/bootstrap-select.js')
+    script(src='js/bootstrap-switch.js')
+    script(src='js/flatui-checkbox.js')
+    script(src='js/flatui-radio.js')
+    script(src='js/jquery.tagsinput.js')
+    script(src='js/jquery.placeholder.js')
+    script(src='js/jquery.stacktable.js')
+    script(src='js/admin.js')
