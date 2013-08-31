@@ -9,7 +9,10 @@ var flash = require('connect-flash')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , async = require('async');
+  , async = require('async')
+  , mysql = require('mysql')
+  , redis = require('redis')
+  , mongoose = require('mongoose');
 
 var site = require('./site');
 
@@ -48,7 +51,6 @@ app.get('/mu-51b3d246-acc75319-c960211f-673bde03', function(req,res){
   res.render('blitz', { title: title });
 });
 
-var mysql      = require('mysql');
 var pool = mysql.createPool({
   host     : site.mysql.host,
   port     : site.mysql.port,
@@ -57,60 +59,33 @@ var pool = mysql.createPool({
   database : site.mysql.database
 });
 
-var redis = require("redis"),
 client = redis.createClient();
 
-app.get('/', function(req,res){
-  console.log(req.route);
-  pool.getConnection(function(err,connection) {
-    if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs WHERE id NOT IN (SELECT gifs.id FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = "nsfw") order by rand() limit 5',function(err,rows,fields){
-      if (err) console.log(err);
-      images_string = JSON.stringify(rows);
-      res.render('index', { site: site, image:rows[0], images_string: images_string});
-      connection.end();
-    });
-  });
+mongoose.connect('mongodb://localhost/'+site.mongodb.db);
+
+app.get('/', function(req,res) {
+  var images = site.mongodb.gifs.grab({},function(error, gifs) {
+    if(error) console.log(error);
+    gif = gifs[0];
+    res.render('index',{site:site, image:gif, images_string: JSON.stringify(gifs)});
+  });  
 });
 
 app.get('/:id(\\d+)', function(req,res){
-  console.log(req.route);
-  pool.getConnection(function(err,connection) {
-    if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND gifs.id = ? UNION (SELECT gifs.* FROM gifs WHERE id NOT IN (SELECT gifs.id FROM gifs, tags WHERE gifs.id = tags.gif_id AND tags.tag = "nsfw") order by rand() limit 5)',req.params.id, function(err,rows,fields){
-      if(err || rows.length < 1)
-      {
-        console.log('No gif with id ' + req.params.id+ ' '+ err);
-        res.redirect("/");
-      }                                                                                                 
-      else                                                                                              
-      { 
-        images_string = JSON.stringify(rows);
-        console.log(rows);
-        res.render('index', { site:site, image:rows[0], images_string: images_string});
-      }                                                                                                 
-      connection.end();                                                                                 
-    });                                                                                                 
-  });    
+  site.mongodb.gifs.find({id: req.params.id}, function (error, data) {
+    if(error) console.log(error);
+    if(!data || data.length == 0) res.redirect("/");
+    res.render('index',{site:site, image:data[0], images_string: JSON.stringify(data[0])} );
+  });	
 });
 
 app.get('/:category', function(req,res){
-  console.log(req.route);
-  pool.getConnection(function(err,connection) {
-    if(err) console.log(err);
-    connection.query('SELECT gifs.* FROM gifs,tags WHERE gifs.id = tags.gif_id AND tags.tag = ? ORDER BY RAND() LIMIT 5',req.params.category, function(err,rows,fields) {
-      if(err || rows.length < 1)
-      {
-        res.redirect("/");
-      }
-      else
-      {
-        images_string = JSON.stringify(rows);
-        res.render('index', { site: site, image:rows[0], images_string: images_string});
-      }
-      connection.end(); 
-    });
-  });  
+  site.mongodb.gifs.grab({tags: req.params.category},function(error,gifs){ 
+    if(error) console.log(error);
+    if(!gifs || gifs.length == 0) res.redirect("/");
+    console.log(gifs);
+    res.render('index', { site: site, image:gifs[0], images_string:JSON.stringify(gifs) });
+  });
 });
 
 app.get('/:category/:id(\\d+)', function(req,res){
